@@ -6,3 +6,4 @@ A native android app for finding your classroom.
 - Caleb Langbroek
 - Donovan Ollenberger-Kutzer
 - Akash Davesar
+- Mitchell Calder
