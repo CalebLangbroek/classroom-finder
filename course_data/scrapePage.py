@@ -36,14 +36,8 @@ subject = ""
 crn = ""
 title = ""
 
-date = list()
-days = list()
-time = list()
-building = list()
-room = list()
-
 # Iterates through total nuber of rows in table
-for x in range(len(driver.find_elements_by_xpath("/html/body/div[3]/form/font/table[2]/tbody/tr"))):
+for x in range(2, len(driver.find_elements_by_xpath("/html/body/div[3]/form/font/table[2]/tbody/tr"))):
 
     # XPath locations
     base_loc = "/html/body/div[3]/form/font/table[2]/tbody/tr[" + str(
@@ -59,15 +53,47 @@ for x in range(len(driver.find_elements_by_xpath("/html/body/div[3]/form/font/ta
         title = driver.find_element_by_xpath(title_loc).text
         print(subject + " " + crn + " " + title)
     
-    # TODO Fix xpaths, /font/text() doesnt work, neither does /font or /font/ or /font/text
+    # XPath for schedule data
     date_loc = base_loc + "/td[2]/font"
     days_loc = base_loc + "/td[2]/font/font"
     time_loc = base_loc + "/td[2]/font/font/font"
-    building_loc = base_loc + "/td[2]/font/font/font/font"
+    build_loc = base_loc + "/td[2]/font/font/font/font"
     room_loc = base_loc + "/td[2]/font/font/font/font/font"
 
-    # TODO WIP
+    # Strings to remove
+    date_text = "Dates: "
+    time_text = "Time: "
+    days_text = "Days: "
+    build_text = "Building: "
+    room_text = "Room: "
+    waste_text = ""
+
+    # Selects rows that start with Dates:
     if (len(driver.find_elements_by_xpath(date_loc)) != 0):
-        building = driver.find_element_by_xpath(building_loc).text
-        
-        print(building)
+        if (driver.find_element_by_xpath(date_loc + "/b").text == "Dates:"):
+
+            room = driver.find_element_by_xpath(room_loc).text
+            waste_text = room
+            room = room[len(room_text):]
+            print(room)
+
+            build = driver.find_element_by_xpath(build_loc).text[:-(len(waste_text))]
+            waste_text = build + waste_text
+            build = build[len(build_text):]
+            print(build)
+
+            time = driver.find_element_by_xpath(time_loc).text[:-(len(waste_text))]
+            waste_text = time + waste_text
+            time = time[len(time_text):]
+            print(time)
+
+            days = driver.find_element_by_xpath(days_loc).text[:-(len(waste_text))]
+            waste_text = days + waste_text
+            days = days[len(days_text):]
+            print(days)
+
+            date = driver.find_element_by_xpath(date_loc).text[:-(len(waste_text))]
+            waste_text = date + waste_text
+            date = date[len(date_text):]
+            print(date)
+
