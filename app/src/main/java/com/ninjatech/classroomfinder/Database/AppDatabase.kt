@@ -1,4 +1,4 @@
-package com.example.databasetest
+package com.ninjatech.classroomfinder
 
 import android.content.Context
 import androidx.room.Database

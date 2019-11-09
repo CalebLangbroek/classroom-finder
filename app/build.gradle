@@ -26,7 +26,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue("string", "GOOGLE_MAPS_KEY", apikeyProperties['GOOGLE_MAPS_KEY'])
+        resValue("string", "GOOGLE_MAP_KEY", apikeyProperties['GOOGLE_MAP_KEY'])
     }
     buildTypes {
         release {

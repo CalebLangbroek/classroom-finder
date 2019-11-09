@@ -1,4 +1,4 @@
-package com.example.databasetest
+package com.ninjatech.classroomfinder
 
 import androidx.lifecycle.LiveData
 import androidx.room.Insert
