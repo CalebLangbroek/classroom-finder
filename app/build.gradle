@@ -26,7 +26,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "GOOGLE_MAPS_KEY", apikeyProperties['GOOGLE_MAPS_KEY'])
+        resValue("string", "GOOGLE_MAPS_KEY", apikeyProperties['GOOGLE_MAPS_KEY'])
     }
     buildTypes {
         release {
@@ -67,7 +67,7 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }
