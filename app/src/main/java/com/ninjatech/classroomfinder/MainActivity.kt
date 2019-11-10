@@ -2,6 +2,7 @@ package com.ninjatech.classroomfinder
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -23,7 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(bottomNavController, appBarConfig)
         bottomNav.setupWithNavController(bottomNavController)
-
     }
 
 }

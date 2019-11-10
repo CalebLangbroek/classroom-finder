@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 // Annotates class to be a Room Database with a table (entity) of the Course class
-@Database(entities = [(Section::class), (TimeTable::class), (Location::class)], version = 1)
+//@Database(entities = [(Section::class), (TimeTable::class), (Location::class)], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun sectionDao(): SectionDao
@@ -34,22 +34,22 @@ abstract class AppDatabase : RoomDatabase() {
                     locationDao.deleteAll()
 
                     // Add sample courses and times.
-                    var course = CourseList(90724, "Stats", "Ruwan")
-                    courseDao.insertCourse(course)
-                    course = CourseList(90339, "Software Engineering", "Opeyemi")
-                    courseDao.insertCourse(course)
-                    course = CourseList(90340, "Artificial Intelligence", "Amir")
-                    courseDao.insertCourse(course)
-                    var time = TimeTable(90724, 1, "10:00", "11:20", "Tuesday", "A310")
-                    timeDao.insertTime(time)
-                    time = TimeTable(90724, 2, "10:00", "11:20", "Thursday", "D223")
-                    timeDao.insertTime(time)
-                    time = TimeTable(90724, 3, "10:00", "11:20", "Friday", "A310")
-                    timeDao.insertTime(time)
-                    time = TimeTable(90339, 4, "11:30", "2:20", "Thursday", "D223")
-                    timeDao.insertTime(time)
-                    time = TimeTable(90340, 5, "2:30", "5:20", "Thursday", "D223")
-                    timeDao.insertTime(time)
+//                    var course = CourseList(90724, "Stats", "Ruwan")
+//                    courseDao.insertCourse(course)
+//                    course = CourseList(90339, "Software Engineering", "Opeyemi")
+//                    courseDao.insertCourse(course)
+//                    course = CourseList(90340, "Artificial Intelligence", "Amir")
+//                    courseDao.insertCourse(course)
+//                    var time = TimeTable(90724, 1, "10:00", "11:20", "Tuesday", "A310")
+//                    timeDao.insertTime(time)
+//                    time = TimeTable(90724, 2, "10:00", "11:20", "Thursday", "D223")
+//                    timeDao.insertTime(time)
+//                    time = TimeTable(90724, 3, "10:00", "11:20", "Friday", "A310")
+//                    timeDao.insertTime(time)
+//                    time = TimeTable(90339, 4, "11:30", "2:20", "Thursday", "D223")
+//                    timeDao.insertTime(time)
+//                    time = TimeTable(90340, 5, "2:30", "5:20", "Thursday", "D223")
+//                    timeDao.insertTime(time)
 
                 }
             }

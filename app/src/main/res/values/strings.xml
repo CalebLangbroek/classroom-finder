@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Classroom Finder</string>
+    <string name="permissionTitle">Permission Denied</string>
+    <string name="permissionDialog">Will not use your location - to change this permission setting in the future, visit Settings>Apps</string>
 </resources>
