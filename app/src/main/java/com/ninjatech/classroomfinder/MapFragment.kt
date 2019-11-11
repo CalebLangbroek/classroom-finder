@@ -5,6 +5,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.Manifest
 import android.app.AlertDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.ninjatech.classroomfinder.databinding.FragmentMapBinding
 
 /**
@@ -74,6 +75,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         } else {
             requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE)
         }
+
+        // Plots an image onto Building B coordinates and rotates.
+        //TODO Correctly place maps + add more
+        val b1 = BitmapDescriptorFactory.fromResource(R.drawable.b1)
+        val b2 = BitmapDescriptorFactory.fromResource(R.drawable.b2)
+
+        val buildB = GroundOverlayOptions()
+            .image(b2)
+            //.anchor(0f, 0f)
+            .bearing(-45f)
+            .position(LatLng(49.028822, -122.285751), 110f, 50f)
+
+        mMap.addGroundOverlay(buildB)
 
 //        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         // Add marker at UFV Abbotsford campus location
