@@ -12,7 +12,7 @@
             tools:layout="@layout/fragment_map"></fragment>
     <fragment
             android:id="@+id/profileFragment"
-            android:name="com.ninjatech.classroomfinder.ProfileFragment"
+            android:name="com.ninjatech.classroomfinder.profile.ProfileFragment"
             android:label="Profile"
             tools:layout="@layout/fragment_profile" />
     <fragment
