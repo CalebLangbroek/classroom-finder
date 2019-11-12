@@ -7,17 +7,21 @@ import androidx.room.*
 interface SavedDao {
 
     @Insert
-    fun insert(savedList: SavedList)
+    fun insert(savedCourse: SavedCourse)
 
     @Delete
-    fun delete(savedList: SavedList)
+    fun delete(savedCourse: SavedCourse)
 
     @Update
-    fun update(savedList: SavedList)
+    fun update(savedCourse: SavedCourse)
 
-    @Query("SELECT * from saved_list_table ORDER BY crn ASC")
-    fun getAlphabetizedCourses(): LiveData<List<SavedList>>
+    @Query("SELECT * FROM saved_course_table ORDER BY crn ASC")
+    fun getAll(): LiveData<List<SavedCourse>>
 
-    @Query("DELETE FROM saved_list_table")
+
+    @Query("SELECT * FROM saved_course_table NATURAL JOIN section_table ORDER BY crn ASC")
+    fun getAllSavedCoursesSectionData() : LiveData<List<SavedCourse>>
+
+    @Query("DELETE FROM saved_course_table")
     fun deleteAll()
 }

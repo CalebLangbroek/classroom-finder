@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 // Annotates class to be a Room Database with a table (entity) of the Course class
-@Database(entities = [(Course::class), (Location::class), (SavedList::class), (Section::class), (Time::class)], version = 1)
+@Database(entities = [(Course::class), (Location::class), (SavedCourse::class), (Section::class), (Time::class)], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     // Declare our DAOs
@@ -32,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                     database.courseDao.insertCourse(course)
                     course = Course(0, "COMP 370 Software Engineering", "COMP")
                     database.courseDao.insertCourse(course)
-                    course = Course(90340, "COMP 380 Artificial Intelligence", "COMP")
+                    course = Course(0, "COMP 380 Artificial Intelligence", "COMP")
                     database.courseDao.insertCourse(course)
 
                     var time = Time(90724, 1, 0, "11:20", "Tuesday", "A310", "", "")
