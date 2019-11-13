@@ -12,16 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition
+import com.google.android.gms.maps.model.*
 
 import com.ninjatech.classroomfinder.databinding.FragmentMapBinding
 
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback{
 
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
@@ -72,28 +70,46 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap?) {
         googleMap = gMap!!
 
-        if(permissionGiven()){
+        if(permissionGiven()) {
             getDeviceLocation()
         }
 
-        // Plots an image onto Building B coordinates and rotates.
-        //TODO Correctly place maps + add more
-        val b1 = BitmapDescriptorFactory.fromResource(R.drawable.b1)
-        val b2 = BitmapDescriptorFactory.fromResource(R.drawable.b2)
-
-        val buildB2 = GroundOverlayOptions()
-            .image(b2)
-            //.anchor(0f, 0f)
-            .bearing(-45f)
-            .position(LatLng(49.028822, -122.285751), 110f, 50f)
-
-        googleMap.addGroundOverlay(buildB2)
+        plotMaps()
 
         // Add marker at UFV Abbotsford campus location
         googleMap.addMarker(MarkerOptions().position(defaultLocation).title("UFV Abbotsford"))
-        if (lastKnownLocation != null) {
-            var location = LatLng((lastKnownLocation)!!.latitude, (lastKnownLocation)!!.longitude)
-            googleMap.animateCamera(newLatLngZoom(location, defaultZoom))
+
+        pointToPosition(defaultLocation)
+    }
+
+    private fun pointToPosition(position: LatLng){
+        val cameraPosition = CameraPosition.builder()
+            .target(position)
+            .zoom(17f).build()
+        googleMap.animateCamera(newCameraPosition(cameraPosition))
+    }
+    private fun plotMaps(){
+        // Plots an image onto Building B coordinates and rotates.
+        val floorDetails = mutableMapOf(
+            "k1" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.k1),
+                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
+                // zIndex?
+            ),
+            "k0" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
+                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
+            )
+        )
+
+        // Iterates through the floorDetailsMap and prints values
+        floorDetails.keys.map{
+            with (floorDetails.getValue(it)){
+                googleMap.addGroundOverlay(GroundOverlayOptions()
+                    .image(image)
+                    .positionFromBounds(positionFromBounds)
+                )
+            }
         }
     }
 
@@ -118,5 +134,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun getLocationPermission() {
         requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
     }
+
+    class FloorDetail(
+        val image: BitmapDescriptor,
+        val positionFromBounds: LatLngBounds
+        //val zIndex: Float
+    )
 
 }
