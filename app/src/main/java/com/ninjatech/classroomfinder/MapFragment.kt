@@ -91,15 +91,56 @@ class MapFragment : Fragment(), OnMapReadyCallback{
     private fun plotMaps(){
         // Plots an image onto Building B coordinates and rotates.
         val floorDetails = mutableMapOf(
+//            "k0" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
+//                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
+//            ),
             "k1" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.k1),
                 positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
                 // zIndex?
             ),
-            "k0" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
-                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
+//            "b2" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
+//                positionFromBounds = LatLngBounds(LatLng(49.030017, -122.286082), LatLng(49.030570, -122.285595))
+//            ),
+//            "a2" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.a2),
+//                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
+//            ),
+            "a3" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.a3),
+                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
+            ),
+//            "a4" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.a4),
+//                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
+//            )
+            "b1" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.b1),
+                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
             )
+//            "b2" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
+//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+//            ),
+//            "b3" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.b3),
+//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+//            ),
+//            "b4" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.b4),
+//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+//            ),
+//            "c1" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.c1),
+//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+//            ),
+//            "c2" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.c2),
+//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+//            )
+
         )
 
         // Iterates through the floorDetailsMap and prints values
