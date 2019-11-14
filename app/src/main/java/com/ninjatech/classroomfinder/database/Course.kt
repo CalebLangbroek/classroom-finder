@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 )
 data class Course(
     @PrimaryKey(autoGenerate = true)
-    var id: Long?,
+    var id: Int,
     var title: String,
     var subject: String
 )

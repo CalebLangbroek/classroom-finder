@@ -25,28 +25,12 @@ class ProfileViewModel(
         viewModelJob.cancel()
     }
 
-    init {
-        initPopulateData()
-    }
     /**
      * Delete a course from saved courses.
      */
     private suspend fun delete(course: SavedCourse) {
         withContext(Dispatchers.IO) {
             database.delete(course)
-        }
-    }
-
-    private fun initPopulateData() {
-        uiScope.launch {
-            populateData()
-        }
-    }
-
-    private suspend fun populateData() {
-        withContext(Dispatchers.IO) {
-            var savedCourse = SavedCourse(0, 33)
-            database.insert(savedCourse)
         }
     }
 }

@@ -4,12 +4,15 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "saved_course_table"
-//    foreignKeys = arrayOf(
-//    ForeignKey(entity = Section::class,
-//        parentColumns = arrayOf("crn"),
-//        childColumns = arrayOf("crn"),
-//        onDelete = ForeignKey.CASCADE))
+@Entity(
+    tableName = "saved_course_table",
+    foreignKeys = arrayOf(
+        ForeignKey(
+            entity = Section::class,
+            parentColumns = arrayOf("crn"),
+            childColumns = arrayOf("crn")
+        )
+    )
 )
 data class SavedCourse(
     @PrimaryKey(autoGenerate = true)

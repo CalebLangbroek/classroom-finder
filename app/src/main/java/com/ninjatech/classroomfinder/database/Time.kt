@@ -11,22 +11,20 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Section::class,
             parentColumns = arrayOf("crn"),
-            childColumns = arrayOf("crn"),
-            onDelete = ForeignKey.CASCADE
+            childColumns = arrayOf("crn")
         ),
         ForeignKey(
             entity = Location::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("locationId"),
-            onDelete = ForeignKey.CASCADE
+            childColumns = arrayOf("locationId")
         )
     )
 )
 data class Time(
     @PrimaryKey(autoGenerate = true)
-    var id: Int?,
+    var id: Int,
     var crn: Int,
-    var locationId: Int?,
+    var locationId: Int,
     val day: String,
 
     @ColumnInfo(name = "start_time")

@@ -71,7 +71,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
         googleMap = gMap!!
 
         if(permissionGiven()) {
-            getDeviceLocation()
+//            getDeviceLocation()
         }
 
         plotMaps()
