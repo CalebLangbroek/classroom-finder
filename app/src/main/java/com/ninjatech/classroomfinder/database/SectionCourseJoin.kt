@@ -22,8 +22,8 @@ class SectionCourseJoin (
 //    val section: Section
     @Embedded
     var course: Course? = null,
-    @Relation(parentColumn = "saveId", entityColumn = "remoteId",     entity = SavedCourse::class)
-    var saved: List<SavedCourse>? = null,
-    @Relation(parentColumn = "remoteId", entityColumn = "courseId", entity = Section::class)
+//    @Relation(parentColumn = "saveId", entityColumn = "remoteId",     entity = SavedCourse::class)
+//    var saved: List<SavedCourse>? = null,
+    @Relation(parentColumn = "id", entityColumn = "courseId", entity = Section::class)
     var time: List<TimeSectionJoin>? = null
 )

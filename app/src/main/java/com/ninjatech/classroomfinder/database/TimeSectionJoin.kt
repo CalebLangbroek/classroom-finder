@@ -18,7 +18,7 @@ class TimeSectionJoin {
     @Embedded
     var list: Section? = null
 
-    @Relation(parentColumn = "remoteId", entityColumn = "sectionId", entity = Time::class)
+    @Relation(parentColumn = "crn", entityColumn = "crn", entity = Time::class)
     var time: List<Time>? = null
 
 }

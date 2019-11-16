@@ -5,22 +5,22 @@ import androidx.room.*
 
 @Entity(
     tableName = "course_table",
-    foreignKeys = [ ForeignKey(
-        entity = SavedCourse::class,
-        parentColumns = arrayOf("remoteId"),
-        childColumns = arrayOf("saveId"),
-        onDelete = ForeignKey.CASCADE)],
+//    foreignKeys = [ ForeignKey(
+//        entity = SavedCourse::class,
+//        parentColumns = arrayOf("id"),
+//        childColumns = arrayOf("id"),
+//        onDelete = ForeignKey.CASCADE)],
     indices = [
-        Index(value = arrayOf("saveId")),
-        Index(value = arrayOf("remoteId"), unique = true)]
+//        Index(value = arrayOf("id")),
+        Index(value = arrayOf("id"), unique = true)]
     )
 
 data class Course(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "localId")
+    @ColumnInfo(name = "id")
     var id: Int,
-    var remoteId: Int,
-    var saveId: Int,
+//    var remoteId: Int,
+//    var saveId: Int,
     var title: String,
     var subject: String
 )

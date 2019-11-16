@@ -7,8 +7,8 @@ import androidx.room.*
     tableName = "time_table", foreignKeys = arrayOf(
         ForeignKey(
             entity = Section::class,
-            parentColumns = arrayOf("remoteId"),
-            childColumns = arrayOf("sectionId")
+            parentColumns = arrayOf("crn"),
+            childColumns = arrayOf("crn")
         ),
         ForeignKey(
             entity = Location::class,
@@ -17,16 +17,16 @@ import androidx.room.*
         )
     ),
             indices = [
-            Index(value = arrayOf("sectionId")),
-            Index(value = arrayOf("remoteId"), unique = true),
+            Index(value = arrayOf("crn")),
+//            Index(value = arrayOf("remoteId"), unique = true),
             Index(value = arrayOf("locationId"))]
 )
 data class Time(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "localId")
+    @ColumnInfo(name = "id")
     var id: Int,
-    var sectionId: Int,
-    var remoteId: Int,
+//    var sectionId: Int,
+//    var remoteId: Int,
     var crn: Int,
     var locationId: Int,
     val day: String,

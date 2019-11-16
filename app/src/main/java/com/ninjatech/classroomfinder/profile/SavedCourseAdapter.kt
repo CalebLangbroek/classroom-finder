@@ -32,7 +32,7 @@ class SavedCourseAdapter: RecyclerView.Adapter<TextItemViewHolder>() {
      */
     override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
         val item = data[position]
-        holder.textView.text = item.id.toString() + " || " + item.remoteId.toString()
+        holder.textView.text = item.id.toString() + " || " + item.crn.toString()
 //        holder.textView.text = item.id.toString() + " || " + item.title.toString() + " || " + item.subject.toString()
     }
 
