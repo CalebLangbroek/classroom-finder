@@ -1,4 +1,4 @@
-package com.ninjatech.classroomfinder
+package com.ninjatech.classroomfinder.search
 
 
 import android.os.Bundle
@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.databinding.FragmentSearchBinding
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment class for the SearchFragment.
  */
 class SearchFragment : Fragment() {
 
@@ -19,7 +20,8 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false)
+        val binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater,
+            R.layout.fragment_search, container, false)
         return binding.root
     }
 
