@@ -1,11 +1,10 @@
 package com.ninjatech.classroomfinder
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -15,15 +14,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Setup bottom nav bar
         val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
 
         val bottomNavController = findNavController(R.id.app_nav_host_fragment)
 
-        val appBarConfig =
-            AppBarConfiguration(setOf(R.id.profileFragment, R.id.mapFragment, R.id.searchFragment))
-
-        setupActionBarWithNavController(bottomNavController, appBarConfig)
         bottomNav.setupWithNavController(bottomNavController)
+
+        // Setup toolbar
+        setSupportActionBar(findViewById(R.id.toolbar))
     }
 
+    /**
+     * Add top toolbar.
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+
+        return true;
+    }
 }

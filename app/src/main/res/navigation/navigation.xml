@@ -9,7 +9,7 @@
             android:id="@+id/mapFragment"
             android:name="com.ninjatech.classroomfinder.MapFragment"
             android:label="Map"
-            tools:layout="@layout/fragment_map"></fragment>
+            tools:layout="@layout/fragment_map"/>
     <fragment
             android:id="@+id/profileFragment"
             android:name="com.ninjatech.classroomfinder.profile.ProfileFragment"
@@ -17,7 +17,7 @@
             tools:layout="@layout/fragment_profile" />
     <fragment
             android:id="@+id/searchFragment"
-            android:name="com.ninjatech.classroomfinder.SearchFragment"
+            android:name="com.ninjatech.classroomfinder.search.SearchFragment"
             android:label="Search"
             tools:layout="@layout/fragment_search" />
 </navigation>
