@@ -6,8 +6,8 @@ import androidx.room.*
 @Dao
 interface SectionDao {
 
-    @Query("SELECT * from section_table ORDER BY crn ASC")
-    fun getAlphabetizedCourses(): LiveData<List<Section>>
+//    @Query("SELECT * from section_table ORDER BY crn ASC")
+//    fun getAlphabetizedCourses(): LiveData<List<Section>>
 
     @Query("DELETE FROM section_table")
     suspend fun deleteAll()

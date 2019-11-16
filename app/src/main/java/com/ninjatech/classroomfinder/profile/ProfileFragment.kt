@@ -66,4 +66,30 @@ class ProfileFragment : Fragment() {
 
         this.binding.lifecycleOwner = this
     }
+//    private fun initViewModel() {
+//        // Get this application
+//        val app = requireNotNull(this.activity).application
+//
+//        // Get the database
+//        val database = AppDatabase.getDatabase(app).courseDao
+//
+//        // Create the ViewModel through the ViewModel factory
+//        val viewModelFactory = ProfileViewModelFactory(database, app)
+//        val profileViewModel =
+//            ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
+//
+//        // Bind to it
+//        this.binding.profileViewModel = profileViewModel
+//
+//        val adapter = SavedCourseAdapter()
+//        binding.savedCourseList.adapter = adapter
+//
+//        profileViewModel.courses.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.data = it
+//            }
+//        })
+//
+//        this.binding.lifecycleOwner = this
+//    }
 }

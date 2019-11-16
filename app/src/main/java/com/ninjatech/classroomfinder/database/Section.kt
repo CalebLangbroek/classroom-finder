@@ -1,23 +1,24 @@
 package com.ninjatech.classroomfinder.database
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 
 @Entity(
-    tableName = "section_table", foreignKeys = arrayOf(
+    tableName = "section_table", foreignKeys = [
         ForeignKey(
             entity = Course::class,
-            parentColumns = arrayOf("id"),
+            parentColumns = arrayOf("remoteId"),
             childColumns = arrayOf("courseId"),
             onDelete = ForeignKey.CASCADE
-        )
+        )], indices = [
+        Index(value = arrayOf("courseId")),
+        Index(value = arrayOf("remoteId"), unique = true)]
     )
-)
 data class Section(
-    @PrimaryKey
-    var crn: Int,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "localId")
+    var id: Int,
+    var remoteId: Int,
     var title: String,
     var courseId: Int
 )

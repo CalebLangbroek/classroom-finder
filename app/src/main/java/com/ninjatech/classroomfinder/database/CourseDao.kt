@@ -8,6 +8,9 @@ interface CourseDao {
     @Query("SELECT * from course_table ORDER BY title ASC")
     fun getAlphabetizedCourses(): LiveData<List<Course>>
 
+    @Query("SELECT * from course_table ORDER BY title ASC")
+    fun getAll(): LiveData<List<Course>>
+
     @Query("DELETE FROM course_table")
     suspend fun deleteAll()
 

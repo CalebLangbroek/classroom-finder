@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.TextItemViewHolder
+import com.ninjatech.classroomfinder.database.Course
 import com.ninjatech.classroomfinder.database.SavedCourse
 
 /**
@@ -18,6 +19,11 @@ class SavedCourseAdapter: RecyclerView.Adapter<TextItemViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
+//    var data = listOf<Course>()
+//        set(value) {
+//            field = value
+//            notifyDataSetChanged()
+//        }
 
     override fun getItemCount() = data.size
 
@@ -26,7 +32,8 @@ class SavedCourseAdapter: RecyclerView.Adapter<TextItemViewHolder>() {
      */
     override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
         val item = data[position]
-        holder.textView.text = item.id.toString() + " " + item.crn.toString()
+        holder.textView.text = item.id.toString() + " || " + item.remoteId.toString()
+//        holder.textView.text = item.id.toString() + " || " + item.title.toString() + " || " + item.subject.toString()
     }
 
     /**

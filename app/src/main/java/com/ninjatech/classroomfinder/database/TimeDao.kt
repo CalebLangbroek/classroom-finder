@@ -12,14 +12,14 @@ interface TimeDao {
     @Query("SELECT * from time_table ORDER BY crn ASC")
     fun getAlphabetizedTimes(): LiveData<List<Time>>
 
-    @Query("SELECT * FROM section_table WHERE crn IN (:crn)")
-    fun loadAllByIds(crn: Array<Int>): List<Section>
+//    @Query("SELECT * FROM section_table WHERE crn IN (:crn)")
+//    fun loadAllByIds(crn: Array<Int>): List<Section>
 
     @Query("SELECT * FROM time_table")
     fun getAllTimes(): List<Time>
 
-    @Query("SELECT * FROM time_table WHERE id=:id")
-    fun findTimesForCourse(id: Int): List<Time>
+//    @Query("SELECT * FROM time_table WHERE id=:id")
+//    fun findTimesForCourse(id: Int): List<Time>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTime(entity: Time)
