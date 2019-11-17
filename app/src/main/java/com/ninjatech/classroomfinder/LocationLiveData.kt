@@ -12,14 +12,6 @@ import com.google.android.gms.location.LocationServices
 class LocationLiveData(context: Context) : LiveData<LocationModel>() {
 
     private var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult ?: return
-            for (location in locationResult.locations) {
-                setLocation(location)
-            }
-        }
-    }
 
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
@@ -46,12 +38,24 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     }
 
     private fun setLocation(location: Location) {
-        value = LocationModel(longitude = location.longitude, latitude = location.latitude)
+        value = LocationModel(
+            longitude = location.longitude,
+            latitude = location.latitude
+        )
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            locationResult ?: return
+            for (location in locationResult.locations) {
+                setLocation(location)
+            }
+        }
     }
 }
 
