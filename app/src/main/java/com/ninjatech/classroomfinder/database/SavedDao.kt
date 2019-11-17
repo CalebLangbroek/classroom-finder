@@ -18,9 +18,8 @@ interface SavedDao {
     @Query("SELECT * FROM saved_course_table ORDER BY crn ASC")
     fun getAll(): LiveData<List<SavedCourse>>
 
-
-    @Query("SELECT * FROM saved_course_table NATURAL JOIN section_table INNER JOIN course_table ON section_table.courseId=course_table.id")
-    fun getAllSavedCourseData(): LiveData<List<SavedCourse>>
+    @Query("SELECT course_table.*, section_table.* FROM section_table INNER JOIN saved_course_table ON section_table.crn = saved_course_table.crn INNER JOIN course_table ON section_table.courseId = course_table.id")
+    fun getAllSavedCourseData(): LiveData<List<SectionAndCourse>>?
 
     @Query("SELECT * FROM saved_course_table NATURAL JOIN time_table INNER JOIN location_table ON time_table.locationId=location_table.id")
     fun getAllSavedCourseTime(): LiveData<List<SavedCourse>>

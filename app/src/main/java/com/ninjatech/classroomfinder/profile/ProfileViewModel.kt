@@ -15,7 +15,7 @@ class ProfileViewModel(
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-    val savedCourses = database.getAll()
+    val savedCourses = database.getAllSavedCourseData()
 
     /**
      * Cancel all coroutines when ViewModel is destroyed.

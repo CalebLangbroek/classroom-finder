@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.TextItemViewHolder
 import com.ninjatech.classroomfinder.database.SavedCourse
+import com.ninjatech.classroomfinder.database.SectionAndCourse
 
 /**
  * Adapter Class for formatting SavedCourses for display.
  */
 class SavedCourseAdapter: RecyclerView.Adapter<TextItemViewHolder>() {
     // Get list of SavedCourses
-    var data = listOf<SavedCourse>()
+    var data = listOf<SectionAndCourse>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -26,7 +27,7 @@ class SavedCourseAdapter: RecyclerView.Adapter<TextItemViewHolder>() {
      */
     override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
         val item = data[position]
-        holder.textView.text = item.id.toString() + " " + item.crn.toString()
+        holder.textView.text = item.course.toString() + " " + item.section.toString()
     }
 
     /**

@@ -5,10 +5,10 @@ import androidx.room.Embedded
 /**
  * Class for displaying the relationship between a Section, and Course.
  */
-data class SectionAndCourse(
-    @Embedded(prefix = "course_")
-    val course: Course,
+class SectionAndCourse {
+    @Embedded
+    lateinit var section: Section
 
-    @Embedded(prefix = "section_")
-    val section: Section
-)
+    @Embedded
+    lateinit var course: Course
+}

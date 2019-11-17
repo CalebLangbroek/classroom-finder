@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
         val adapter = SavedCourseAdapter()
         binding.savedCourseList.adapter = adapter
 
-        profileViewModel.savedCourses.observe(viewLifecycleOwner, Observer {
+        profileViewModel.savedCourses?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
             }
