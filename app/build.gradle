@@ -8,9 +8,14 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
-def apikeyPropertiesFile = rootProject.file("apikey.properties")
-def apikeyProperties = new Properties()
-apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+def getApiKey() {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('apikey.properties')))
+    return props['GOOGLE_MAPS_KEY']
+}
+//def apikeyPropertiesFile = rootProject.file("apikey.properties")
+//def apikeyProperties = new Properties()
+//apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     compileSdkVersion 29
@@ -26,7 +31,16 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue("string", "GOOGLE_MAPS_KEY", apikeyProperties['GOOGLE_MAPS_KEY'])
+        resValue("string", "GOOGLE_MAPS_KEY", "\"" + getApiKey() + "\"")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
     buildTypes {
         release {
@@ -59,7 +73,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "androidx.core:core:$core_version"
+    implementation "androidx.core:core-ktx:$core_version"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // Material Design

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 // Annotates class to be a Room Database with a table (entity) of the Course class
-@Database(entities = [(Course::class), (Location::class), (SavedCourse::class), (Section::class), (Time::class)], version = 1)
+@Database(entities = [(Course::class), (Location::class), (SavedCourse::class), (Section::class), (Time::class)], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // Declare our DAOs

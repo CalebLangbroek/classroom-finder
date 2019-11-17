@@ -13,4 +13,5 @@
 /captures
 .externalNativeBuild
 apikey.properties
+/app/build.gradle
 
