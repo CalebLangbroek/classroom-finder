@@ -6,10 +6,10 @@
         app:startDestination="@id/mapFragment">
 
     <fragment
-            android:id="@+id/mapFragment"
-            android:name="com.ninjatech.classroomfinder.MapFragment"
-            android:label="Map"
-            tools:layout="@layout/fragment_map"/>
+        android:id="@+id/mapFragment"
+        android:name="com.ninjatech.classroomfinder.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map"/>
     <fragment
             android:id="@+id/profileFragment"
             android:name="com.ninjatech.classroomfinder.profile.ProfileFragment"
