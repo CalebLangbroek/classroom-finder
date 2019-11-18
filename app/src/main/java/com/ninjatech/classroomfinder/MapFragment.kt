@@ -30,10 +30,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         private const val LOCATION_PERMISSION_CODE = 100
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val binding = DataBindingUtil.inflate<FragmentMapBinding>(inflater, R.layout.fragment_map, container, false)
+        val binding = DataBindingUtil.inflate<FragmentMapBinding>(
+            inflater,
+            R.layout.fragment_map,
+            container,
+            false
+        )
 
         mapViewModel = activity?.run {
             ViewModelProviders.of(this)[MapViewModel::class.java]
@@ -47,7 +56,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        locationPermissionAction()
+        //locationPermissionAction()
     }
 
     override fun onMapReady(gMap: GoogleMap?) {
@@ -56,7 +65,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         plotMaps()
 
         googleMap.addMarker(MarkerOptions().position(defaultLocation).title("UFV Abbotsford"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
     }
 
     private fun locationPermissionAction() {
@@ -76,7 +85,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun startLocationUpdate() {
         mapViewModel.getCurrentLocation().observe(this, Observer {
             userLocation = LatLng(it.latitude, it.longitude)
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom));
         })
     }
 
@@ -125,11 +134,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 //            "a4" to FloorDetail(
 //                image = BitmapDescriptorFactory.fromResource(R.drawable.a4),
 //                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
-//            )
+//            ),
             "b1" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.b1),
                 positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-            )
+            ),
 //            "b2" to FloorDetail(
 //                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
 //                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
@@ -142,12 +151,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 //                image = BitmapDescriptorFactory.fromResource(R.drawable.b4),
 //                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
 //            ),
-//            "c1" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.c1),
-//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-//            ),
+            "c1" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.c1),
+                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+            ),
 //            "c2" to FloorDetail(
 //                image = BitmapDescriptorFactory.fromResource(R.drawable.c2),
+//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+//            ),
+//            "d1" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.d1),
+//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+//            ),
+            "d2" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.d2),
+                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+            )
+//            "d3" to FloorDetail(
+//                image = BitmapDescriptorFactory.fromResource(R.drawable.d3),
 //                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
 //            )
 
