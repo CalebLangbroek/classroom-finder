@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+import sqlite3
 
 
 def return_to_subjects():
@@ -19,7 +20,7 @@ def scrape_page():
     crn = ""
     title = ""
 
-    # Iterates through total nuber of rows in table
+    # Iterates through total number of rows in table
     for x in range(2, len(driver.find_elements_by_xpath("/html/body/div[3]/form/font/table[2]/tbody/tr"))):
 
         # XPath locations
@@ -30,7 +31,7 @@ def scrape_page():
         title_loc = base_loc + "/td[4]/a"
 
         # Grabs data if subject location exists
-        if (len(driver.find_elements_by_xpath(subj_loc)) != 0):
+        if len(driver.find_elements_by_xpath(subj_loc)) != 0:
             subject = driver.find_element_by_xpath(subj_loc).text
             crn = driver.find_element_by_xpath(crn_loc).text
             title = driver.find_element_by_xpath(title_loc).text
@@ -52,8 +53,8 @@ def scrape_page():
         waste_text = ""
 
         # Selects rows that start with Dates:
-        if (len(driver.find_elements_by_xpath(date_loc)) != 0):
-            if (driver.find_element_by_xpath(date_loc + "/b").text == "Dates:"):
+        if len(driver.find_elements_by_xpath(date_loc)) != 0:
+            if driver.find_element_by_xpath(date_loc + "/b").text == "Dates:":
 
                 # Scrapes room text 
                 # Adds to waste_text for later element scrapes
@@ -77,7 +78,11 @@ def scrape_page():
                     time_loc).text[:-(len(waste_text))]
                 waste_text = time + waste_text
                 time = time[len(time_text):]
-                print(time)
+                if "Online" not in build:
+                    times = time.split(" - ")
+                    sTime = times[0]
+                    fTime = times[1]
+                    print(sTime, fTime)
 
                 days = driver.find_element_by_xpath(
                     days_loc).text[:-(len(waste_text))]
@@ -89,7 +94,10 @@ def scrape_page():
                     date_loc).text[:-(len(waste_text))]
                 waste_text = date + waste_text
                 date = date[len(date_text):]
-                print(date)
+                dates = date.split(" to ")
+                sDate = dates[0]
+                fDate = dates[1]
+                print(sDate, fDate)
 
 
 # Initiate webdriver with url
@@ -125,7 +133,7 @@ for x in range(1, len(sel_subject.options)):
     button2.submit()
 
     # If no courses in subject do not scrape
-    if (len(driver.find_elements_by_xpath("//span[@class='warningtext']")) != 0):
+    if len(driver.find_elements_by_xpath("//span[@class='warningtext']")) != 0:
         print("No courses here!")
         return_to_subjects()
         continue
