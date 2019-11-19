@@ -103,9 +103,9 @@ class SearchFragment : Fragment() {
         val adapter = CourseAdapter()
         binding.courseList.adapter = adapter
 
-        searchViewModel.courses.observe(viewLifecycleOwner, Observer {
+        searchViewModel.courses?.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

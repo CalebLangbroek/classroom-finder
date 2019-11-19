@@ -2,40 +2,53 @@ package com.ninjatech.classroomfinder.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ninjatech.classroomfinder.R
-import com.ninjatech.classroomfinder.TextItemViewHolder
-import com.ninjatech.classroomfinder.database.Course
+import com.ninjatech.classroomfinder.database.SectionAndCourse
+import com.ninjatech.classroomfinder.databinding.CourseItemViewBinding
+import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
 
 /**
-* Adapter Class for formatting Courses for display.
-*/
-class CourseAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
-    // Get list of Courses
-    var data = listOf<Course>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun getItemCount() = data.size
+ * Adapter Class for formatting Courses for display.
+ */
+class CourseAdapter : ListAdapter<SectionAndCourse, CourseAdapter.ViewHolder>(
+    SectionAndCourseDiffCallBack()
+) {
 
     /**
      * Display a specific Course.
      */
-    override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
-        val item = data[position]
-        holder.textView.text = item.title + " " + item.subject
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
     }
 
     /**
      * Create a View for a Course.
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextItemViewHolder {
-        // Inflate the parent
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.course_item_view, parent, false) as TextView
-        return TextItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
     }
+
+    class ViewHolder constructor(private val binding: CourseItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        /**
+         * Bind to the data binding variable.
+         */
+        fun bind(item: SectionAndCourse) {
+            binding.sectionAndCourse = item
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                // Inflate the parent
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = CourseItemViewBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(view)
+            }
+        }
+    }
+
 }
