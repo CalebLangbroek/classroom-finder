@@ -27,16 +27,22 @@ def main():
         c.execute('SELECT id FROM coordinates WHERE lat=? AND long=?', (lat, long))
         coord_id = c.fetchone()[0]
         print(coord_id)
-
-        c.execute('INSERT INTO rooms(coor_id, room, building, level) VALUES (?, ?, ?, ?)',
-                  (coord_id, room, building, level))
-        conn.commit()
+        if coord_id is not None:
+            c.execute('INSERT INTO rooms(coor_id, room, building, level) VALUES (?, ?, ?, ?)',
+                      (coord_id, room, building, level))
+            conn.commit()
 
 
 # Insert coords into coordinates
 def insert_coords(lat, long):
     c = conn.cursor()
-    c.execute('INSERT INTO coordinates(lat, long) VALUES (?, ?)', (lat, long))
+
+    # Only inserts unique values
+    c.execute('SELECT * FROM coordinates WHERE (lat=? AND long=?)', (lat, long))
+    entry = c.fetchone()
+    if entry is None:
+        c.execute('INSERT INTO coordinates(lat, long) VALUES (?, ?)', (lat, long))
+
     conn.commit()
 
 

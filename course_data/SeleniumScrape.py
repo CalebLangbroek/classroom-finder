@@ -99,7 +99,6 @@ def scrape_page():
 
             # Insert into courses into courses table if unique
             c.execute('INSERT OR IGNORE INTO courses(title, subject) VALUES (?, ?)', (subject, title))
-            conn.commit()
 
             # Retrieves appropriate id from courses table to insert into sections table
             c.execute('SELECT id FROM courses WHERE title = ?', (subject, ))
@@ -108,6 +107,7 @@ def scrape_page():
             # Insert row into sections if unique with appropriate course_id
             c.execute('INSERT OR IGNORE INTO sections(crn, course_id, title) VALUES (?, ?, ?)', (crn, course_id, section))
             print(crn + " " + title)
+            conn.commit()
 
         # XPath for schedule data
         date_loc = base_loc + "/td[2]/font"
@@ -151,10 +151,11 @@ def scrape_page():
                 waste_text = time + waste_text
                 time = time[len(time_text):]
                 if "Online" not in build:
-                    times = time.split(" - ")
-                    sTime = times[0]
-                    fTime = times[1]
-                    print(sTime, fTime)
+                    if len(time) != 0:
+                        times = time.split(" - ")
+                        sTime = times[0]
+                        fTime = times[1]
+                        print(sTime, fTime)
 
                 days = driver.find_element_by_xpath(
                     days_loc).text[:-(len(waste_text))]
