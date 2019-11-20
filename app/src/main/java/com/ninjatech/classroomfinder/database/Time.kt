@@ -2,26 +2,30 @@ package com.ninjatech.classroomfinder.database
 
 import androidx.room.*
 
-
 @Entity(
-    tableName = "time_table", foreignKeys = arrayOf(
+    tableName = "times", foreignKeys = arrayOf(
         ForeignKey(
             entity = Section::class,
             parentColumns = arrayOf("crn"),
-            childColumns = arrayOf("crn")
+            childColumns = arrayOf("section_crn")
         ),
         ForeignKey(
-            entity = Location::class,
+            entity = ClassRoom::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("locationId")
+            childColumns = arrayOf("room_id")
         )
     )
 )
 data class Time(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    var crn: Int,
-    var locationId: Int,
+    val id: Int,
+
+    @ColumnInfo(name = "section_crn")
+    val sectionCrn: Int,
+
+    @ColumnInfo(name = "room_id")
+    val roomId: Int,
+
     val day: String,
 
     @ColumnInfo(name = "start_time")
@@ -31,8 +35,8 @@ data class Time(
     val endTime: String,
 
     @ColumnInfo(name = "start_date")
-    var startDate: String,
+    val startDate: String,
 
     @ColumnInfo(name = "end_date")
-    var endDate: String
+    val endDate: String
 )

@@ -3,7 +3,7 @@ package com.ninjatech.classroomfinder.search
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ninjatech.classroomfinder.database.CourseDao
+import com.ninjatech.classroomfinder.database.CoursesDao
 import java.lang.IllegalArgumentException
 
 
@@ -11,7 +11,7 @@ import java.lang.IllegalArgumentException
  * ViewModel Factory for creating ViewModel for SearchFragment.
  */
 class SearchViewModelFactory(
-    private val database: CourseDao,
+    private val database: CoursesDao,
     private val app: Application
 ) : ViewModelProvider.Factory {
 

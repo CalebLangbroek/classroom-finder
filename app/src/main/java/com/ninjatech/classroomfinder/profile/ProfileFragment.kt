@@ -45,7 +45,7 @@ class ProfileFragment : Fragment() {
         val app = requireNotNull(this.activity).application
 
         // Get the database
-        val database = AppDatabase.getDatabase(app).savedDao
+        val database = AppDatabase.getDatabase(app).savedSectionsDao
 
         // Create the ViewModel through the ViewModel factory
         val viewModelFactory = ProfileViewModelFactory(database, app)

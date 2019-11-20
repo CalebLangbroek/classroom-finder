@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ninjatech.classroomfinder.database.CourseDao
+import com.ninjatech.classroomfinder.database.CoursesDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
  * ViewModel class for SearchFragment.
  */
 class SearchViewModel(
-    val database: CourseDao,
+    val database: CoursesDao,
     app: Application
 ) : AndroidViewModel(app) {
 
@@ -24,7 +24,7 @@ class SearchViewModel(
     var courses = Transformations.switchMap(searchInput) {
         if(it.isEmpty()) {
             // Return all courses if there isn't a search value
-            database.getAlphabetizedCourses()
+            database.getAllCourses()
         } else {
             // Otherwise filter the courses
             database.getCourseByTitleOrSubject(it)

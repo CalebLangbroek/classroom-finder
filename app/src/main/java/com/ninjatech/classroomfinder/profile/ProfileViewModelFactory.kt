@@ -3,7 +3,7 @@ package com.ninjatech.classroomfinder.profile
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ninjatech.classroomfinder.database.SavedDao
+import com.ninjatech.classroomfinder.database.SavedSectionsDao
 import java.lang.IllegalArgumentException
 
 
@@ -11,7 +11,7 @@ import java.lang.IllegalArgumentException
  * ViewModel Factory for creating ViewModel for ProfileFragment.
  */
 class ProfileViewModelFactory(
-    private val database: SavedDao,
+    private val database: SavedSectionsDao,
     private val app: Application
 ) : ViewModelProvider.Factory {
 

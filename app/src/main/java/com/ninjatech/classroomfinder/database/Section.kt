@@ -2,24 +2,22 @@ package com.ninjatech.classroomfinder.database
 
 import androidx.room.*
 
-
 @Entity(
-    tableName = "section_table", foreignKeys = arrayOf(
+    tableName = "sections", foreignKeys = arrayOf(
         ForeignKey(
             entity = Course::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("courseId"),
-            onDelete = ForeignKey.CASCADE
+            childColumns = arrayOf("course_id")
         )
     )
 )
 data class Section(
     @PrimaryKey
-    var crn: Int,
+    val crn: Int,
 
-    @ColumnInfo(name = "section_title")
-    var title: String,
-    var courseId: Int
+    @ColumnInfo(name = "course_id")
+    val courseId: Int,
+    val title: String
 )
 
 
