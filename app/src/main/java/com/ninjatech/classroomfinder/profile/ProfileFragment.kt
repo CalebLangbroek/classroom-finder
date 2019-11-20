@@ -26,7 +26,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_profile, container, false
         )
@@ -60,7 +60,7 @@ class ProfileFragment : Fragment() {
 
         profileViewModel.savedCourses?.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

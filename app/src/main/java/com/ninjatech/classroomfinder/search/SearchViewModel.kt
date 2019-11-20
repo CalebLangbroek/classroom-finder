@@ -1,11 +1,9 @@
 package com.ninjatech.classroomfinder.search
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ninjatech.classroomfinder.database.Course
 import com.ninjatech.classroomfinder.database.CourseDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

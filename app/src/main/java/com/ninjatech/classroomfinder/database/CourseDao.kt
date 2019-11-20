@@ -1,20 +1,19 @@
 package com.ninjatech.classroomfinder.database
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao
 interface CourseDao {
-    @Query("SELECT * from course_table ORDER BY title ASC")
-    fun getAlphabetizedCourses(): LiveData<List<Course>>
+    @Query("SELECT course_table.*, section_table.* FROM section_table INNER JOIN course_table ON section_table.courseId = course_table.id ORDER BY title ASC")
+    fun getAlphabetizedCourses(): LiveData<List<SectionAndCourse>>?
 
     /**
      * Query the database for a match on the title or subject.
      * Using the % operator so it can match on either side.
      */
-    @Query("SELECT * FROM course_table WHERE title LIKE '%' || :query || '%' OR subject LIKE '%' || :query || '%'")
-    fun getCourseByTitleOrSubject(query : String) : LiveData<List<Course>>?
+    @Query("SELECT course_table.*, section_table.* FROM section_table INNER JOIN course_table ON section_table.courseId = course_table.id WHERE course_table.title LIKE '%' || :query || '%' OR course_table.subject LIKE '%' || :query || '%'")
+    fun getCourseByTitleOrSubject(query : String) : LiveData<List<SectionAndCourse>>?
 
     @Query("DELETE FROM course_table")
     suspend fun deleteAll()
