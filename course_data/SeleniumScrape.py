@@ -142,7 +142,8 @@ def scrape_page():
                 waste_text = build + waste_text
                 # Add only building text to build
                 build = build[len(build_text):]
-                print(build)
+                build_letter = build[-2:-1]
+                print(build_letter)
 
                 # Same as above but for time
                 time = driver.find_element_by_xpath(
@@ -172,15 +173,17 @@ def scrape_page():
                         fTime = times[1]
                         print(sTime, fTime)
 
-                        # Insert row into times table
-                        # TODO WIP
-                        c.execute('SELECT id FROM rooms WHERE room = ?', (room,))
+                        # Locates id where room and building matches and inserts into table
+                        c.execute('SELECT id FROM rooms WHERE room = ? AND building = ?', (room, build_letter))
+                        room_id = c.fetchone()
+
                         if room_id is not None:
-                            room_id = c.fetchone()
-                            # Retrieves appropriate id from courses table to insert into sections table
+                            room_id = room_id[0]
+                            # Only insert into table if row is entirely unique
                             c.execute('SELECT * FROM times WHERE section_crn = ? AND room_id = ? AND day = ? AND '
                                       'start_time = ? AND end_time = ? AND start_date = ? AND end_date = ?',
                                       (crn, room_id, days, sTime, fTime, sDate, fDate))
+
                             existing_course = c.fetchone()
                             if existing_course is None:
                                 c.execute(
