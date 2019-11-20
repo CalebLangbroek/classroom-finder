@@ -12,7 +12,6 @@ driver.get('https://warden.ufv.ca:8910/prod/bwysched.p_select_term?wsea_code=CRE
 
 
 def main():
-
     # Select Fall 2019 in form
     sel_term = Select(driver.find_elements_by_name("term_code")[0])
     sel_term.select_by_value("201909")
@@ -70,7 +69,6 @@ def return_to_subjects():
 
 
 def scrape_page():
-
     c = conn.cursor()
 
     # SCRAPED DATA
@@ -101,11 +99,12 @@ def scrape_page():
             c.execute('INSERT OR IGNORE INTO courses(title, subject) VALUES (?, ?)', (subject, title))
 
             # Retrieves appropriate id from courses table to insert into sections table
-            c.execute('SELECT id FROM courses WHERE title = ?', (subject, ))
+            c.execute('SELECT id FROM courses WHERE title = ?', (subject,))
             course_id = c.fetchone()[0]
 
             # Insert row into sections if unique with appropriate course_id
-            c.execute('INSERT OR IGNORE INTO sections(crn, course_id, title) VALUES (?, ?, ?)', (crn, course_id, section))
+            c.execute('INSERT OR IGNORE INTO sections(crn, course_id, title) VALUES (?, ?, ?)',
+                      (crn, course_id, section))
             print(crn + " " + title)
             conn.commit()
 
@@ -150,12 +149,6 @@ def scrape_page():
                     time_loc).text[:-(len(waste_text))]
                 waste_text = time + waste_text
                 time = time[len(time_text):]
-                if "Online" not in build:
-                    if len(time) != 0:
-                        times = time.split(" - ")
-                        sTime = times[0]
-                        fTime = times[1]
-                        print(sTime, fTime)
 
                 days = driver.find_element_by_xpath(
                     days_loc).text[:-(len(waste_text))]
@@ -172,7 +165,30 @@ def scrape_page():
                 fDate = dates[1]
                 print(sDate, fDate)
 
+                if "Online" not in build:
+                    if len(time) != 0:
+                        times = time.split(" - ")
+                        sTime = times[0]
+                        fTime = times[1]
+                        print(sTime, fTime)
+
+                        # Insert row into times table
+                        # TODO WIP
+                        c.execute('SELECT id FROM rooms WHERE room = ?', (room,))
+                        if room_id is not None:
+                            room_id = c.fetchone()
+                            # Retrieves appropriate id from courses table to insert into sections table
+                            c.execute('SELECT * FROM times WHERE section_crn = ? AND room_id = ? AND day = ? AND '
+                                      'start_time = ? AND end_time = ? AND start_date = ? AND end_date = ?',
+                                      (crn, room_id, days, sTime, fTime, sDate, fDate))
+                            existing_course = c.fetchone()
+                            if existing_course is None:
+                                c.execute(
+                                    'INSERT INTO times(section_crn, room_id, day, start_time, end_time, start_date, '
+                                    'end_date) VALUES (?, ?, ?, ? ,? ,? ,?)', (crn, room_id, days, sTime, fTime,
+                                                                               sDate, fDate))
+
 
 if __name__ == "__main__":
-    delete_all()
+    # delete_all()
     main()
