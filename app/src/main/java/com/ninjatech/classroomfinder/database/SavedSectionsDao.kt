@@ -1,5 +1,6 @@
 package com.ninjatech.classroomfinder.database
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -29,4 +30,7 @@ interface SavedSectionsDao {
 
     @Query("DELETE FROM saved_sections")
     fun deleteAll()
+
+    @Query ("SELECT times.day, times.start_time FROM saved_sections INNER JOIN sections ON crn = saved_sections.section_crn INNER JOIN courses ON course_id = courses.id INNER JOIN times on crn = times.section_crn ORDER BY start_time ASC")
+    fun getAlarms(): Cursor
 }
