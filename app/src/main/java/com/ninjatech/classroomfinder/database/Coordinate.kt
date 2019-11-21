@@ -4,17 +4,16 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "location_table")
-data class Location(
+@Entity(
+    tableName = "coordinates"
+)
+data class Coordinate(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
 
-    @ColumnInfo(name = "long")
-    var longitude: Double,
-
     @ColumnInfo(name = "lat")
-    var latitude: Double,
+    var latitude: Float,
 
-    var building: String?,
-    var room: String?
+    @ColumnInfo(name = "long")
+    var longitude: Float
 )

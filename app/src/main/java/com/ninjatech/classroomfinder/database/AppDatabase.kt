@@ -4,21 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import java.io.File
 
 // Annotates class to be a Room Database with a table (entity) of the Course class
-@Database(entities = [(Course::class), (Location::class), (SavedCourse::class), (Section::class), (Time::class)], version = 1, exportSchema = false)
+@Database(entities = [(Coordinate::class),(Course::class), (ClassRoom::class), (SavedSection::class), (Section::class), (Time::class)], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // Declare our DAOs
-    abstract val courseDao: CourseDao
-    abstract val locationDao: LocationDao
-    abstract val savedDao: SavedDao
-    abstract val sectionDao: SectionDao
-    abstract val timeDao: TimeDao
+    abstract val coursesDao: CoursesDao
+    abstract val savedSectionsDao: SavedSectionsDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

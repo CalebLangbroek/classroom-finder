@@ -2,15 +2,15 @@ package com.ninjatech.classroomfinder.profile
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.ninjatech.classroomfinder.database.SavedCourse
-import com.ninjatech.classroomfinder.database.SavedDao
+import com.ninjatech.classroomfinder.database.SavedSection
+import com.ninjatech.classroomfinder.database.SavedSectionsDao
 import kotlinx.coroutines.*
 
 /**
  * ViewModel class for ProfileFragment.
  */
 class ProfileViewModel(
-    val database: SavedDao,
+    val database: SavedSectionsDao,
     app: Application) : AndroidViewModel(app) {
 
     private val viewModelJob = Job()
@@ -28,9 +28,9 @@ class ProfileViewModel(
     /**
      * Delete a course from saved courses.
      */
-    private suspend fun delete(course: SavedCourse) {
+    private suspend fun delete(savedSection: SavedSection) {
         withContext(Dispatchers.IO) {
-            database.delete(course)
+            database.delete(savedSection)
         }
     }
 }

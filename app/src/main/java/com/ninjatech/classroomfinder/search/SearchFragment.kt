@@ -90,7 +90,7 @@ class SearchFragment : Fragment() {
         val app = requireNotNull(this.activity).application
 
         // Get the database
-        val database = AppDatabase.getDatabase(app).courseDao
+        val database = AppDatabase.getDatabase(app).coursesDao
 
         // Create the ViewModel through the ViewModel factory
         val viewModelFactory = SearchViewModelFactory(database, app)
