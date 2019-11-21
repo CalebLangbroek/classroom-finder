@@ -21,10 +21,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var mapViewModel: MapViewModel
+    private lateinit var floorDetails: MutableMap<String, FloorDetail>
 
     private val defaultLocation = LatLng(49.028677, -122.284397)
     private val defaultZoom = 17.0f
     private var userLocation: LatLng = defaultLocation
+    private var groundOverlayObjects = arrayOfNulls<GroundOverlay>(5)
 
     companion object {
         private const val LOCATION_PERMISSION_CODE = 100
@@ -62,7 +64,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap?) {
         googleMap = gMap!!
 
-        plotMaps()
+        plotDefaultMaps()
+
+        changeFloor("A333")
 
         googleMap.addMarker(MarkerOptions().position(defaultLocation).title("UFV Abbotsford"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
@@ -107,89 +111,110 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun plotMaps() {
-        // Plots an image onto Building B coordinates and rotates.
-        val floorDetails = mutableMapOf(
-//            "k0" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
-//                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
-//            ),
-            "k1" to FloorDetail(
+    private fun plotDefaultMaps() {
+
+        val defaultFloors = mutableSetOf("A2", "B2", "C1", "D1", "K1")
+
+        floorDetails = mutableMapOf(
+            "K0" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
+                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
+            ),
+            "K1" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.k1),
                 positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
                 // zIndex?
             ),
-//            "b2" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
-//                positionFromBounds = LatLngBounds(LatLng(49.030017, -122.286082), LatLng(49.030570, -122.285595))
-//            ),
-//            "a2" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.a2),
-//                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
-//            ),
-            "a3" to FloorDetail(
+            "B2" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
+                positionFromBounds = LatLngBounds(LatLng(49.030017, -122.286082), LatLng(49.030570, -122.285595))
+            ),
+            "A2" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.a2),
+                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
+            ),
+            "A3" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.a3),
                 positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
             ),
-//            "a4" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.a4),
-//                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
-//            ),
-            "b1" to FloorDetail(
+            "A4" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.a4),
+                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
+            ),
+            "B1" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.b1),
                 positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
             ),
-//            "b2" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
-//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-//            ),
-//            "b3" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.b3),
-//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-//            ),
-//            "b4" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.b4),
-//                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-//            ),
-            "c1" to FloorDetail(
+            "B2" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
+                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+            ),
+            "B3" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.b3),
+                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+            ),
+            "B4" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.b4),
+                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
+            ),
+            "C1" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.c1),
                 positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
             ),
-//            "c2" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.c2),
-//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-//            ),
-//            "d1" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.d1),
-//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-//            ),
-            "d2" to FloorDetail(
+            "C2" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.c2),
+                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+            ),
+            "D1" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.d1),
+                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+            ),
+            "D2" to FloorDetail(
                 image = BitmapDescriptorFactory.fromResource(R.drawable.d2),
                 positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
+            ),
+            "D3" to FloorDetail(
+                image = BitmapDescriptorFactory.fromResource(R.drawable.d3),
+                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
             )
-//            "d3" to FloorDetail(
-//                image = BitmapDescriptorFactory.fromResource(R.drawable.d3),
-//                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-//            )
-
         )
 
-        // Iterates through the floorDetailsMap and prints values
-        floorDetails.keys.map {
-            with(floorDetails.getValue(it)) {
-                googleMap.addGroundOverlay(
+        // Overlays only the default floors
+        val it: Iterator<String> =  defaultFloors.asIterable().iterator()
+        var index = 0
+        while (it.hasNext()) {
+            val e = it.next()
+            with(floorDetails.getValue(e)) {
+                    groundOverlayObjects[index] = googleMap.addGroundOverlay(
                     GroundOverlayOptions()
                         .image(image)
                         .positionFromBounds(positionFromBounds)
                 )
             }
+            index += 1
         }
     }
 
+    private fun changeFloor(classroom: String){
+        val letToNum = mapOf("A" to 0, "B" to 1, "C" to 2, "D" to 3, "K" to 4)
+        val building: String = classroom[0].toString().toUpperCase()
+        val floor: String = classroom[1].toString()
+        val floorPlanNo: String = building + floor
+
+        groundOverlayObjects[letToNum.getValue(building)]?.remove()
+
+        with(floorDetails.getValue(floorPlanNo)) {
+            groundOverlayObjects[letToNum.getValue(building)] = googleMap.addGroundOverlay(
+                GroundOverlayOptions()
+                    .image(image)
+                    .positionFromBounds(positionFromBounds)
+            )
+        }
+
+    }
     class FloorDetail(
         val image: BitmapDescriptor,
         val positionFromBounds: LatLngBounds
-        //val zIndex: Float
     )
 
 }
