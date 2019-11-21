@@ -8,24 +8,99 @@
         <variable
             name="sectionAndCourse"
             type="com.ninjatech.classroomfinder.database.SectionAndCourse" />
+        <variable
+            name="clickListener"
+            type="com.ninjatech.classroomfinder.util.SectionAndCourseListener" />
     </data>
-    <com.google.android.material.card.MaterialCardView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/course_item_parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="200dp"
-        android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingBottom="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/course_item_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{sectionAndCourse.course.title}" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/course_item_card_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="150dp">
 
+                <TextView
+                    android:id="@+id/course_item_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/default_margin"
+                    android:text="@{sectionAndCourse.course.title + ' ' + sectionAndCourse.course.subject + ' ' + sectionAndCourse.section.title}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="COMP 390 Data Communications AB1" />
+
+                <TextView
+                    android:id="@+id/course_item_dates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@{sectionAndCourse.time.startDate + ' ' + sectionAndCourse.time.endDate}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/course_item_subject"
+                    tools:text="Sep 02, 2019 - Nov 29, 2019" />
+
+                <TextView
+                    android:id="@+id/course_item_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@{sectionAndCourse.time.day + ' ' + sectionAndCourse.time.startTime + ' ' + sectionAndCourse.time.endTime}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/course_item_dates"
+                    tools:text="Tues 9:30 - 15:30" />
+
+                <CheckBox
+                    android:id="@+id/course_item_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:onClick="@{() -> clickListener.onClick(sectionAndCourse)}"
+                    android:buttonTint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/course_item_card" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

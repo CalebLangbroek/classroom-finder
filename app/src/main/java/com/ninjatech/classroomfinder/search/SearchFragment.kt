@@ -2,7 +2,9 @@ package com.ninjatech.classroomfinder.search
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentSearchBinding
+import com.ninjatech.classroomfinder.util.SectionAndCourseListener
 
 /**
  * Fragment class for the SearchFragment.
@@ -100,7 +103,9 @@ class SearchFragment : Fragment() {
         // Bind to it
         this.binding.searchViewModel = searchViewModel
 
-        val adapter = CourseAdapter()
+        val adapter = CourseAdapter(SectionAndCourseListener { crn ->
+            searchViewModel.onCourseClicked(crn)
+        })
         binding.courseList.adapter = adapter
 
         searchViewModel.courses?.observe(viewLifecycleOwner, Observer {

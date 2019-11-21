@@ -7,20 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.database.SectionAndCourse
 import com.ninjatech.classroomfinder.databinding.CourseItemViewBinding
 import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
+import com.ninjatech.classroomfinder.util.SectionAndCourseListener
 
 /**
  * Adapter Class for formatting Courses for display.
  */
-class CourseAdapter : ListAdapter<SectionAndCourse, CourseAdapter.ViewHolder>(
-    SectionAndCourseDiffCallBack()
-) {
+class CourseAdapter(val clickListener: SectionAndCourseListener) :
+    ListAdapter<SectionAndCourse, CourseAdapter.ViewHolder>(
+        SectionAndCourseDiffCallBack()
+    ) {
 
     /**
      * Display a specific Course.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(clickListener, item)
     }
 
     /**
@@ -36,8 +38,12 @@ class CourseAdapter : ListAdapter<SectionAndCourse, CourseAdapter.ViewHolder>(
         /**
          * Bind to the data binding variable.
          */
-        fun bind(item: SectionAndCourse) {
+        fun bind(clickListener: SectionAndCourseListener, item: SectionAndCourse) {
             binding.sectionAndCourse = item
+            binding.clickListener = clickListener
+
+            TODO("not implemented") // Check that checkbox state matches db
+
             binding.executePendingBindings()
         }
 

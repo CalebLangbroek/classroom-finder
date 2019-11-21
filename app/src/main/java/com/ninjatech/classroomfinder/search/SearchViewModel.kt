@@ -1,6 +1,7 @@
 package com.ninjatech.classroomfinder.search
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -45,6 +46,13 @@ class SearchViewModel(
     fun filterCourses(query: String?) {
         // Update the search value
         searchInput.value = query
+    }
+
+    /**
+     * Called when a course had been clicked.
+     */
+    fun onCourseClicked(crn : Int) {
+       TODO("no implemented") // Implement function
     }
 
 }
