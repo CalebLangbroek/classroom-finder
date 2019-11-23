@@ -1,9 +1,12 @@
 package com.ninjatech.classroomfinder.profile
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.ninjatech.classroomfinder.database.SavedSection
 import com.ninjatech.classroomfinder.database.SavedSectionsDao
+import com.ninjatech.classroomfinder.database.SectionAndCourse
 import kotlinx.coroutines.*
 
 /**

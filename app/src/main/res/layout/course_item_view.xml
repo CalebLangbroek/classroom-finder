@@ -81,6 +81,7 @@
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginBottom="@dimen/default_margin"
                     android:onClick="@{() -> clickListener.onClick(sectionAndCourse)}"
+                    android:checked="false"
                     android:buttonTint="@color/colorAccent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
