@@ -42,8 +42,6 @@ class CourseAdapter(val clickListener: SectionAndCourseListener) :
             binding.sectionAndCourse = item
             binding.clickListener = clickListener
 
-            TODO("not implemented") // Check that checkbox state matches db
-
             binding.executePendingBindings()
         }
 

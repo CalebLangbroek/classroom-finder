@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
     tableName = "coordinates"
 )
 data class Coordinate(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    @PrimaryKey
+    var id: String,
 
     @ColumnInfo(name = "lat")
     var latitude: Float,

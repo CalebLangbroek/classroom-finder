@@ -13,12 +13,11 @@ import androidx.room.PrimaryKey
     )
 ))
 data class ClassRoom(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
 
     @ColumnInfo(name = "coor_id")
-    val coorId : Int,
-    val room: String,
+    val coorId : String,
     val building: String,
     val level : Int
 )

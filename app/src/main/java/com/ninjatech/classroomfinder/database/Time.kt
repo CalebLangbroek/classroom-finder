@@ -24,7 +24,7 @@ data class Time(
     val sectionCrn: Int,
 
     @ColumnInfo(name = "room_id")
-    val roomId: Int,
+    val roomId: String,
 
     val day: String,
 

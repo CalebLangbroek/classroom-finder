@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // Annotates class to be a Room Database with a table (entity) of the Course class
-@Database(entities = [(Coordinate::class),(Course::class), (ClassRoom::class), (SavedSection::class), (Section::class), (Time::class)], version = 1, exportSchema = false)
+@Database(entities = [(Coordinate::class),(Course::class), (ClassRoom::class), (ReachableCoordinate::class), (SavedSection::class), (Section::class), (Time::class)], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     // Declare our DAOs
@@ -33,7 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
                             "app_database"
                         )
                         .createFromAsset("database/database.db")
-                        .fallbackToDestructiveMigration()
                         .build()
                 }
 

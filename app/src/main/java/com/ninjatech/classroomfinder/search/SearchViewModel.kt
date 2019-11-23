@@ -1,14 +1,12 @@
 package com.ninjatech.classroomfinder.search
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ninjatech.classroomfinder.database.CoursesDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.ninjatech.classroomfinder.database.SavedSection
+import kotlinx.coroutines.*
 
 /**
  * ViewModel class for SearchFragment.
@@ -52,7 +50,39 @@ class SearchViewModel(
      * Called when a course had been clicked.
      */
     fun onCourseClicked(crn : Int) {
-       TODO("no implemented") // Implement function
+        uiScope.launch {
+            val savedSection = getSavedSectionByCrn(crn)
+
+            if(savedSection != null) {
+                // Remove from saved list
+                deleteSavedSection(savedSection)
+            } else {
+                // Add to saved list
+                insertSavedSection(SavedSection(0, crn))
+            }
+        }
+
+    }
+
+    private suspend fun getSavedSectionByCrn(crn : Int) : SavedSection? {
+        return withContext(Dispatchers.IO) {
+            val isSaved = database.getSavedSectionByCrn(crn)
+            isSaved
+        }
+    }
+
+    private suspend fun insertSavedSection(newSavedSection : SavedSection) : Long {
+        return withContext(Dispatchers.IO) {
+            val rowsEffected = database.insertSavedSection(newSavedSection)
+            rowsEffected
+        }
+    }
+
+    private suspend fun deleteSavedSection(savedSection: SavedSection) : Int {
+        return withContext(Dispatchers.IO) {
+            val rowsEffected = database.deleteSavedSection(savedSection)
+            rowsEffected
+        }
     }
 
 }
