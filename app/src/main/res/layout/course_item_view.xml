@@ -11,6 +11,9 @@
         <variable
             name="clickListener"
             type="com.ninjatech.classroomfinder.util.SectionAndCourseListener" />
+        <variable
+            name="isChecked"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,22 +59,22 @@
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:text="@{sectionAndCourse.time.startDate + ' ' + sectionAndCourse.time.endDate}"
+                    app:courseTimesAndRoomsFormatted="@{sectionAndCourse.timesAndRooms}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/course_item_subject"
                     tools:text="Sep 02, 2019 - Nov 29, 2019" />
 
-                <TextView
-                    android:id="@+id/course_item_times"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:text="@{sectionAndCourse.time.day + ' ' + sectionAndCourse.time.startTime + ' ' + sectionAndCourse.time.endTime}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/course_item_dates"
-                    tools:text="Tues 9:30 - 15:30" />
+<!--                <TextView-->
+<!--                    android:id="@+id/course_item_times"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="@dimen/default_margin"-->
+<!--                    android:layout_marginLeft="@dimen/default_margin"-->
+<!--                    android:layout_marginTop="@dimen/default_margin"-->
+<!--                    android:text="@{sectionAndCourse.timesAndRooms}"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/course_item_dates"-->
+<!--                    tools:text="Tues 9:30 - 15:30" />-->
 
                 <CheckBox
                     android:id="@+id/course_item_checkbox"
@@ -81,7 +84,7 @@
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginBottom="@dimen/default_margin"
                     android:onClick="@{() -> clickListener.onClick(sectionAndCourse)}"
-                    android:checked="false"
+                    android:checked="@{isChecked}"
                     android:buttonTint="@color/colorAccent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

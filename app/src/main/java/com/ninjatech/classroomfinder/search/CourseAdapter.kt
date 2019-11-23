@@ -22,7 +22,10 @@ class CourseAdapter(val clickListener: SectionAndCourseListener) :
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(clickListener, item)
+
+        // Set for initial checked state
+        val isChecked = item.savedSection.id > 0
+        holder.bind(clickListener, item, isChecked)
     }
 
     /**
@@ -38,9 +41,10 @@ class CourseAdapter(val clickListener: SectionAndCourseListener) :
         /**
          * Bind to the data binding variable.
          */
-        fun bind(clickListener: SectionAndCourseListener, item: SectionAndCourse) {
+        fun bind(clickListener: SectionAndCourseListener, item: SectionAndCourse, isChecked : Boolean) {
             binding.sectionAndCourse = item
             binding.clickListener = clickListener
+            binding.isChecked= isChecked
 
             binding.executePendingBindings()
         }

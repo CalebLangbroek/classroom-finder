@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "09fadef8f9bd1d09c2f134f1785fa40d",
+    "identityHash": "1cc5d8379bd577b77c51f02eb4607c56",
     "entities": [
       {
         "tableName": "coordinates",
@@ -181,11 +181,11 @@
       },
       {
         "tableName": "saved_sections",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`saved_section_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `section_crn` INTEGER NOT NULL, FOREIGN KEY(`section_crn`) REFERENCES `sections`(`crn`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `section_crn` INTEGER NOT NULL, FOREIGN KEY(`section_crn`) REFERENCES `sections`(`crn`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "saved_section_id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -198,7 +198,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "saved_section_id"
+            "id"
           ],
           "autoGenerate": true
         },
@@ -347,10 +347,15 @@
         ]
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "TimeAndClassRoom",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT * FROM times INNER JOIN rooms ON times.room_id = rooms.id"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09fadef8f9bd1d09c2f134f1785fa40d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1cc5d8379bd577b77c51f02eb4607c56')"
     ]
   }
 }

@@ -17,7 +17,6 @@ import androidx.room.PrimaryKey
 )
 data class SavedSection(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "saved_section_id")
     val id: Int,
 
     @ColumnInfo(name = "section_crn")
