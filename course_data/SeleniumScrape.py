@@ -57,7 +57,8 @@ def delete_all():
     c = conn.cursor()
     c.execute('DELETE FROM courses')
     c.execute('DELETE FROM sections')
-    c.execute('UPDATE sqlite_sequence SET seq = 0 WHERE name = ? OR name = ?', ('courses', 'sections'))
+    c.execute('DELETE FROM times')
+    c.execute('UPDATE sqlite_sequence SET seq = 0 WHERE name = ? OR name = ?', ('courses', 'times'))
     conn.commit()
 
 
@@ -72,9 +73,7 @@ def scrape_page():
     c = conn.cursor()
 
     # SCRAPED DATA
-    subject = ""
     crn = ""
-    title = ""
 
     # Iterates through total number of rows in table
     for x in range(2, len(driver.find_elements_by_xpath("/html/body/div[3]/form/font/table[2]/tbody/tr"))):
@@ -121,7 +120,6 @@ def scrape_page():
         days_text = "Days: "
         build_text = "Building: "
         room_text = "Room: "
-        waste_text = ""
 
         # Selects rows that start with Dates:
         if len(driver.find_elements_by_xpath(date_loc)) != 0:
@@ -167,31 +165,33 @@ def scrape_page():
                 print(sDate, fDate)
 
                 if "Online" not in build:
+                    room = build_letter + room
                     if len(time) != 0:
                         times = time.split(" - ")
                         sTime = times[0]
                         fTime = times[1]
                         print(sTime, fTime)
-
+                        print(room)
                         # Locates id where room and building matches and inserts into table
-                        c.execute('SELECT id FROM rooms WHERE room = ? AND building = ?', (room, build_letter))
+                        c.execute('SELECT id FROM rooms WHERE id=?', (room,))
                         room_id = c.fetchone()
 
                         if room_id is not None:
-                            room_id = room_id[0]
+                            print('room_id = ', room)
                             # Only insert into table if row is entirely unique
                             c.execute('SELECT * FROM times WHERE section_crn = ? AND room_id = ? AND day = ? AND '
                                       'start_time = ? AND end_time = ? AND start_date = ? AND end_date = ?',
-                                      (crn, room_id, days, sTime, fTime, sDate, fDate))
+                                      (crn, room, days, sTime, fTime, sDate, fDate))
 
                             existing_course = c.fetchone()
                             if existing_course is None:
                                 c.execute(
                                     'INSERT INTO times(section_crn, room_id, day, start_time, end_time, start_date, '
-                                    'end_date) VALUES (?, ?, ?, ? ,? ,? ,?)', (crn, room_id, days, sTime, fTime,
+                                    'end_date) VALUES (?, ?, ?, ? ,? ,? ,?)', (crn, room, days, sTime, fTime,
                                                                                sDate, fDate))
+                                conn.commit()
 
 
 if __name__ == "__main__":
-    # delete_all()
+    delete_all()
     main()
