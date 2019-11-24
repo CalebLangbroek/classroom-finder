@@ -1,26 +1,32 @@
 package com.ninjatech.classroomfinder.profile
 
-import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.database.SectionAndCourse
 import com.ninjatech.classroomfinder.databinding.SavedCourseItemViewBinding
+import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
+import com.ninjatech.classroomfinder.util.SectionAndCourseListener
 
 /**
  * Adapter Class for formatting SavedCourses for display.
  */
-class SavedCourseAdapter : ListAdapter<SectionAndCourse, SavedCourseAdapter.ViewHolder>(
-    SectionAndCourseDiffCallBack()
-) {
+class SavedCourseAdapter(
+    val clickListener: SectionAndCourseListener,
+    val editEnabled: LiveData<Boolean>
+) :
+    ListAdapter<SectionAndCourse, SavedCourseAdapter.ViewHolder>(
+        SectionAndCourseDiffCallBack()
+    ) {
 
     /**
      * Display a specific SavedCourse.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener, false)
     }
 
     /**
@@ -36,8 +42,14 @@ class SavedCourseAdapter : ListAdapter<SectionAndCourse, SavedCourseAdapter.View
         /**
          * Bind to the data binding variable.
          */
-        fun bind(item: SectionAndCourse) {
+        fun bind(
+            item: SectionAndCourse,
+            clickListener: SectionAndCourseListener,
+            isEditEnabled: Boolean
+        ) {
             binding.sectionAndCourse = item
+            binding.clickListener = clickListener
+            binding.isEditEnabled = isEditEnabled
             binding.executePendingBindings()
         }
 

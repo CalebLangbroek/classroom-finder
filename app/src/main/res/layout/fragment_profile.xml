@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".profile.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".profile.ProfileFragment">
+
     <data>
+
         <variable
             name="profileViewModel"
             type="com.ninjatech.classroomfinder.profile.ProfileViewModel" />
@@ -30,6 +32,7 @@
             style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> profileViewModel.onEditButtonClicked()}"
             android:src="@drawable/ic_edit_black_24dp"
             android:tint="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="@+id/saved_courses_text"
@@ -40,10 +43,11 @@
             android:id="@+id/saved_course_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingTop="@dimen/default_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saved_courses_text"/>
+            app:layout_constraintTop_toBottomOf="@+id/saved_courses_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,14 +2,13 @@ package com.ninjatech.classroomfinder.search
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentSearchBinding
@@ -90,7 +89,7 @@ class SearchFragment : Fragment() {
      */
     private fun initViewModel() {
         // Get this application
-        val app = requireNotNull(this.activity).application
+        val app = this.activity!!.application
 
         // Get the database
         val database = AppDatabase.getDatabase(app).coursesDao
@@ -114,6 +113,16 @@ class SearchFragment : Fragment() {
             }
         })
 
+        searchViewModel.snackBarText.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    it,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                searchViewModel.clearSnackBarText()
+            }
+        })
         this.binding.lifecycleOwner = this
     }
 

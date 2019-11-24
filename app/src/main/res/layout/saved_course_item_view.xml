@@ -8,6 +8,14 @@
         <variable
             name="sectionAndCourse"
             type="com.ninjatech.classroomfinder.database.SectionAndCourse" />
+
+        <variable
+            name="clickListener"
+            type="com.ninjatech.classroomfinder.util.SectionAndCourseListener" />
+
+        <variable
+            name="isEditEnabled"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,28 +26,65 @@
         android:paddingRight="@dimen/default_margin"
         android:paddingBottom="@dimen/default_margin">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/saved_course_item_navigate"
+            style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:onClick="@{() -> clickListener.onClick(sectionAndCourse)}"
+            android:src="@drawable/ic_navigation_blue_24dp"
+            android:tint="#1a73e8"
+            app:layout_constraintBottom_toBottomOf="@+id/saved_course_item_heading"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/saved_course_item_heading" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{sectionAndCourse.course.title}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="COMP 390" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/saved_course_item_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:text="@{sectionAndCourse.course.title + ' ' + sectionAndCourse.section.title}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/saved_course_item_navigate"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="COMP 390 AB1" />
 
-        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/saved_course_item_dates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            app:courseTimesAndRoomsFormatted="@{sectionAndCourse.timesAndRooms}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_course_item_heading"
+            tools:text="Sep 02, 2019 - Nov 29, 2019" />
+
+        <View
+            android:id="@+id/saved_course_item_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:paddingBottom="@dimen/default_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_course_item_dates" />
+
+        <ImageButton
+            android:id="@+id/saved_course_item_delete"
+            style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> clickListener.onClick(sectionAndCourse)}"
+            android:src="@drawable/ic_delete_red_24dp"
+            android:tint="#d50000"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/saved_course_item_heading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/saved_course_item_heading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

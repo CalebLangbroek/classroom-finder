@@ -2,6 +2,7 @@ package com.ninjatech.classroomfinder.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ninjatech.classroomfinder.database.CoursesDao
@@ -19,6 +20,10 @@ class SearchViewModel(
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     private val searchInput = MutableLiveData("")
+
+    private var _snackBarText = MutableLiveData<String>()
+
+    val snackBarText: LiveData<String> get() = _snackBarText
 
     var courses = Transformations.switchMap(searchInput) {
         if (it.isEmpty()) {
@@ -56,12 +61,17 @@ class SearchViewModel(
             if (savedSection != null) {
                 // Remove from saved list
                 deleteSavedSection(savedSection)
+                _snackBarText.value = "Course Removed"
             } else {
                 // Add to saved list
                 insertSavedSection(SavedSection(0, crn))
+                _snackBarText.value = "Course Added"
             }
         }
+    }
 
+    fun clearSnackBarText() {
+        _snackBarText.value = ""
     }
 
     private suspend fun getSavedSectionByCrn(crn: Int): SavedSection? {

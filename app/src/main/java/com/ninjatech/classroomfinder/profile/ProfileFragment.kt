@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentProfileBinding
+import com.ninjatech.classroomfinder.util.SectionAndCourseListener
 
 /**
  * Fragment for profile screen.
@@ -55,7 +56,10 @@ class ProfileFragment : Fragment() {
         // Bind to it
         this.binding.profileViewModel = profileViewModel
 
-        val adapter = SavedCourseAdapter()
+        val adapter = SavedCourseAdapter(SectionAndCourseListener { crn ->
+            profileViewModel.onNavigateButtonClicked()
+        }, profileViewModel.editEnabled)
+
         binding.savedCourseList.adapter = adapter
 
         profileViewModel.savedCourses?.observe(viewLifecycleOwner, Observer {
