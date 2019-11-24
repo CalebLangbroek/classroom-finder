@@ -1,4 +1,4 @@
-package com.ninjatech.classroomfinder
+package com.ninjatech.classroomfinder.map
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -16,6 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
     // Declare our DAOs
     abstract val coursesDao: CoursesDao
     abstract val savedSectionsDao: SavedSectionsDao
+    abstract val coordinateDao: CoordinateDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

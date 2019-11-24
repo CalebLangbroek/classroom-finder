@@ -21,7 +21,7 @@ class SearchViewModel(
     private val searchInput = MutableLiveData("")
 
     var courses = Transformations.switchMap(searchInput) {
-        if(it.isEmpty()) {
+        if (it.isEmpty()) {
             // Return all courses if there isn't a search value
             database.getAllCourses()
         } else {
@@ -49,11 +49,11 @@ class SearchViewModel(
     /**
      * Called when a course had been clicked.
      */
-    fun onCourseClicked(crn : Int) {
+    fun onCourseClicked(crn: Int) {
         uiScope.launch {
             val savedSection = getSavedSectionByCrn(crn)
 
-            if(savedSection != null) {
+            if (savedSection != null) {
                 // Remove from saved list
                 deleteSavedSection(savedSection)
             } else {
@@ -64,21 +64,21 @@ class SearchViewModel(
 
     }
 
-    private suspend fun getSavedSectionByCrn(crn : Int) : SavedSection? {
+    private suspend fun getSavedSectionByCrn(crn: Int): SavedSection? {
         return withContext(Dispatchers.IO) {
             val isSaved = database.getSavedSectionByCrn(crn)
             isSaved
         }
     }
 
-    private suspend fun insertSavedSection(newSavedSection : SavedSection) : Long {
+    private suspend fun insertSavedSection(newSavedSection: SavedSection): Long {
         return withContext(Dispatchers.IO) {
             val rowsEffected = database.insertSavedSection(newSavedSection)
             rowsEffected
         }
     }
 
-    private suspend fun deleteSavedSection(savedSection: SavedSection) : Int {
+    private suspend fun deleteSavedSection(savedSection: SavedSection): Int {
         return withContext(Dispatchers.IO) {
             val rowsEffected = database.deleteSavedSection(savedSection)
             rowsEffected

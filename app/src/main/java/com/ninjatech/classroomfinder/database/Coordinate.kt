@@ -12,8 +12,8 @@ data class Coordinate(
     var id: String,
 
     @ColumnInfo(name = "lat")
-    var latitude: Float,
+    var latitude: Double,
 
     @ColumnInfo(name = "long")
-    var longitude: Float
+    var longitude: Double
 )

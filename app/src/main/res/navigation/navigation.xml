@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.ninjatech.classroomfinder.MapFragment"
+        android:name="com.ninjatech.classroomfinder.map.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map"/>
     <fragment

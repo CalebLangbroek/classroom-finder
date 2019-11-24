@@ -5,4 +5,6 @@
     <string name="permissionDialog">Will not use your location - to change this permission setting in the future, visit Settings>Apps</string>
     <string name="search_hint">Search courses</string>
     <string name="search">Search</string>
+    <string name="draw_path">Draw Path</string>
+    <string name="clear_path">Clear Path</string>
 </resources>

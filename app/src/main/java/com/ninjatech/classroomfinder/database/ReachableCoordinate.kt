@@ -29,5 +29,5 @@ data class ReachableCoordinate(
     @ColumnInfo(name = "to_coor_id")
     var toCoorId: String,
 
-    var cost: Float
+    var cost: Double
 )
