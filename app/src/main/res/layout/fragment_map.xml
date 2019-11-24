@@ -17,14 +17,12 @@
             android:id="@+id/mapView"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="0dp"/>
         <Button
             android:id="@+id/drawPathButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:text="@string/draw_path"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -32,11 +30,29 @@
             android:id="@+id/clearPathButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:text="@string/clear_path"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/drawPathButton"
             app:layout_constraintTop_toTopOf="parent"/>
+        <Button
+            android:id="@+id/changeToFloor1Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/floor_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:id="@+id/changeToFloor2Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/floor_2"
+            app:layout_constraintTop_toBottomOf="@+id/changeToFloor1Button"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:id="@+id/changeToFloor3Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/floor_3"
+            app:layout_constraintTop_toBottomOf="@+id/changeToFloor2Button"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

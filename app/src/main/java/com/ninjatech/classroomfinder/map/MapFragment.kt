@@ -23,13 +23,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
-    private lateinit var floorDetails: MutableMap<String, FloorDetail>
     private lateinit var binding: FragmentMapBinding
 
     private val defaultLocation = LatLng(49.028677, -122.284397)
     private val defaultZoom = 19.0f
     private var userLocation: LatLng = defaultLocation
-    private var groundOverlayObjects = arrayOfNulls<GroundOverlay>(5)
+    private var groundOverlayObjects = mutableSetOf<GroundOverlay>()
     private var polylineOptions: PolylineOptions = PolylineOptions()
     private var polyline: Polyline? = null
     private var path: List<LatLng> = emptyList()
@@ -55,16 +54,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Initialize the View Model.
         this.initViewModel()
 
-        // Create the path buttons.
-        val drawPathButton: Button = binding.drawPathButton
-        drawPathButton.setOnClickListener {
-            drawPath()
-        }
-        val clearPathButton: Button = binding.clearPathButton
-        clearPathButton.setOnClickListener {
-            clearPath()
-        }
-
+        this.initButtons()
+        
         // Create the map.
         mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -83,9 +74,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap?) {
         googleMap = gMap!!
 
-        plotDefaultMaps()
-
-        changeFloor("A333")
+        plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
 
         googleMap.addMarker(MarkerOptions().position(defaultLocation).title("UFV Abbotsford"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
@@ -130,9 +119,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun drawPath() {
-        binding.mapViewModel!!.setPath("AH322", "AH304")
+        binding.mapViewModel!!.setPath("O027", "O004")
 
-        path = binding.mapViewModel!!.getPath()!!
+        path = binding.mapViewModel!!.getPath()
 
         if (path.isNotEmpty()) {
             polylineOptions.addAll(path)
@@ -141,112 +130,51 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun clearPath() {
-        if (polyline != null) {
-            polyline = null
-        }
+        polyline?.remove()
+        polyline = null
     }
 
-    private fun plotDefaultMaps() {
-        val defaultFloors = mutableSetOf("A2", "B2", "C1", "D1", "K1")
-
-        floorDetails = mutableMapOf(
-            "A2" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.a2),
-                positionFromBounds = LatLngBounds(LatLng(49.028963, -122.285213), LatLng(49.029499, -122.282799))
-            ),
-            "A3" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.a3),
-                positionFromBounds = LatLngBounds(LatLng(49.028962, -122.285215), LatLng(49.029500, -122.282791))
-            ),
-            "A4" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.a4),
-                positionFromBounds = LatLngBounds(LatLng(49.028965, -122.285190), LatLng(49.029486, -122.282777))
-            ),
-            "B1" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.b1),
-                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286516), LatLng(49.029342, -122.285084))
-            ),
-            "B2" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.b2),
-                positionFromBounds = LatLngBounds(LatLng(49.028421, -122.286517), LatLng(49.029343, -122.285087))
-            ),
-            "B3" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.b3),
-                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-            ),
-            "B4" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.b4),
-                positionFromBounds = LatLngBounds(LatLng(49.028417, -122.286510), LatLng(49.029343, -122.285060))
-            ),
-            "C1" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.c1),
-                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-            ),
-            "C2" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.c2),
-                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-            ),
-            "D1" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.d1),
-                positionFromBounds = LatLngBounds(LatLng(49.027785, -122.285911), LatLng(49.028601, -122.285143))
-            ),
-            "D2" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.d2),
-                positionFromBounds = LatLngBounds(LatLng(49.027779, -122.285918), LatLng(49.028604, -122.285135))
-            ),
-            "D3" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.d3),
-                positionFromBounds = LatLngBounds(LatLng(49.027776, -122.287581), LatLng(49.028558, -122.286003))
-            ),
-            "K0" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.k0),
-                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
-            ),
-            "K1" to FloorDetail(
-                image = BitmapDescriptorFactory.fromResource(R.drawable.k1),
-                positionFromBounds = LatLngBounds(LatLng(49.030379, -122.288909), LatLng(49.031230, -122.288296))
-                // zIndex?
-            )
-        )
-
-        // Overlays only the default floors
-        val it: Iterator<String> = defaultFloors.asIterable().iterator()
-        var index = 0
-        while (it.hasNext()) {
-            val e = it.next()
-            with(floorDetails.getValue(e)) {
-                groundOverlayObjects[index] = googleMap.addGroundOverlay(
+    private fun plotBuildingLayouts(floorDetails: MutableSet<FloorDetail?>) {
+        groundOverlayObjects.forEach {
+            it.remove()
+        }
+        groundOverlayObjects.clear()
+        floorDetails.forEach {
+            groundOverlayObjects.add(
+                googleMap.addGroundOverlay(
                     GroundOverlayOptions()
-                        .image(image)
-                        .positionFromBounds(positionFromBounds)
+                        .image(it!!.image)
+                        .positionFromBounds(it!!.positionFromBounds)
                 )
-            }
-            index += 1
-        }
-    }
-
-    private fun changeFloor(classroom: String) {
-        val letToNum = mapOf("A" to 0, "B" to 1, "C" to 2, "D" to 3, "K" to 4)
-        val building: String = classroom[0].toString().toUpperCase()
-        val floor: String = classroom[1].toString()
-        val floorPlanNo: String = building + floor
-
-        groundOverlayObjects[letToNum.getValue(building)]?.remove()
-
-        with(floorDetails.getValue(floorPlanNo)) {
-            groundOverlayObjects[letToNum.getValue(building)] = googleMap.addGroundOverlay(
-                GroundOverlayOptions()
-                    .image(image)
-                    .positionFromBounds(positionFromBounds)
             )
         }
-
     }
 
-    class FloorDetail(
-        val image: BitmapDescriptor,
-        val positionFromBounds: LatLngBounds
-    )
+    private fun initButtons() {
+        val drawPathButton: Button = binding.drawPathButton
+        drawPathButton.setOnClickListener {
+            drawPath()
+        }
+        val clearPathButton: Button = binding.clearPathButton
+        clearPathButton.setOnClickListener {
+            clearPath()
+        }
+        val changeToFloor1Button: Button = binding.changeToFloor1Button
+        changeToFloor1Button.setOnClickListener {
+            binding.mapViewModel!!.setFloorSet(1)
+            plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
+        }
+        val changeToFloor2Button: Button = binding.changeToFloor2Button
+        changeToFloor2Button.setOnClickListener {
+            binding.mapViewModel!!.setFloorSet(2)
+            plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
+        }
+        val changeToFloor3Button: Button = binding.changeToFloor3Button
+        changeToFloor3Button.setOnClickListener {
+            binding.mapViewModel!!.setFloorSet(3)
+            plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
+        }
+    }
 
     private fun initViewModel() {
         // Get this application
