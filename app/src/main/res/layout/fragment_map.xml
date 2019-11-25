@@ -6,7 +6,7 @@
     <data>
         <variable
             name="mapViewModel"
-            type="com.ninjatech.classroomfinder.map.MapViewModel" />
+            type="com.ninjatech.classroomfinder.map.MapViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,11 +27,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         <Button
+            android:id="@+id/setPathButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_path"
+            app:layout_constraintStart_toEndOf="@id/drawPathButton"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <Button
             android:id="@+id/clearPathButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/clear_path"
-            app:layout_constraintStart_toEndOf="@id/drawPathButton"
+            app:layout_constraintStart_toEndOf="@id/setPathButton"
             app:layout_constraintTop_toTopOf="parent"/>
         <Button
             android:id="@+id/changeToFloor1Button"

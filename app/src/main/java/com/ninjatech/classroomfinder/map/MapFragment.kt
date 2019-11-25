@@ -11,11 +11,12 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.ninjatech.classroomfinder.R
-import com.ninjatech.classroomfinder.database.AppDatabase
+import com.ninjatech.classroomfinder.database.Coordinate
 import com.ninjatech.classroomfinder.databinding.FragmentMapBinding
 import kotlin.collections.*
 
@@ -31,7 +32,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var groundOverlayObjects = mutableSetOf<GroundOverlay>()
     private var polylineOptions: PolylineOptions = PolylineOptions()
     private var polyline: Polyline? = null
-    private var path: List<LatLng> = emptyList()
+    private var path: List<Coordinate> = emptyList()
 
     companion object {
         private const val LOCATION_PERMISSION_CODE = 100
@@ -61,7 +62,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         this.initViewModel()
 
         this.initButtons()
-        
+
         // Create the map.
         mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -82,7 +83,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
 
-        googleMap.addMarker(MarkerOptions().position(defaultLocation).title("UFV Abbotsford"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
     }
 
@@ -124,13 +124,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun drawPath() {
+    private fun setPath() {
         binding.mapViewModel!!.setPath("O027", "O004")
+    }
 
+    private fun drawPath() {
+
+        val latLngPath = mutableListOf<LatLng>()
         path = binding.mapViewModel!!.getPath()
-
-        if (path.isNotEmpty()) {
-            polylineOptions.addAll(path)
+        path.forEach {
+            latLngPath.add(LatLng(it.latitude, it.longitude))
+        }
+        if (latLngPath.isNotEmpty()) {
+            polylineOptions.addAll(latLngPath)
             polyline = googleMap.addPolyline(polylineOptions)
         }
     }
@@ -150,7 +156,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 googleMap.addGroundOverlay(
                     GroundOverlayOptions()
                         .image(it!!.image)
-                        .positionFromBounds(it!!.positionFromBounds)
+                        .positionFromBounds(it.positionFromBounds)
                 )
             )
         }
@@ -160,6 +166,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val drawPathButton: Button = binding.drawPathButton
         drawPathButton.setOnClickListener {
             drawPath()
+        }
+        val setPathButton: Button = binding.setPathButton
+        setPathButton.setOnClickListener {
+            setPath()
         }
         val clearPathButton: Button = binding.clearPathButton
         clearPathButton.setOnClickListener {
@@ -186,12 +196,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Get this application
         val application = (this.activity)!!.application
 
-        // Get the database
-        val database = AppDatabase.getDatabase(application).coordinateDao
-
         // Create the ViewModel through the ViewModel factory
-        val viewModelFactory = MapViewModelFactory(database, application)
-        val mapViewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        val mapViewModel = ViewModelProviders.of(this, SavedStateViewModelFactory(application, this))
+            .get(MapViewModel::class.java)
 
         // Bind to it
         this.binding.mapViewModel = mapViewModel

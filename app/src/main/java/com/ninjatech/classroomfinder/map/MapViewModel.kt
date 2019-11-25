@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.ninjatech.classroomfinder.R
+import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.database.Coordinate
 import com.ninjatech.classroomfinder.database.CoordinateAndReachable
 import com.ninjatech.classroomfinder.database.CoordinateDao
@@ -15,16 +16,22 @@ import java.util.*
 import kotlin.collections.HashSet
 
 class MapViewModel(
-    private val database: CoordinateDao,
-    application: Application
+    application: Application,
+    state: SavedStateHandle
 ) : AndroidViewModel(application) {
+
+    companion object {
+        private const val FLOOR_KEY = "floor"
+        private const val PATH_KEY = "path"
+    }
 
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val database: CoordinateDao = AppDatabase.getDatabase(application).coordinateDao
+    private val savedStateHandle = state
 
     private var location = LocationLiveData(application)
-    private var path: List<LatLng> = emptyList()
-    private var floor = 2
+
     private var floorDetails = mutableMapOf(
         "A2" to FloorDetail(
             image = BitmapDescriptorFactory.fromResource(R.drawable.a2),
@@ -87,7 +94,7 @@ class MapViewModel(
 
     fun getCurrentLocation() = location
 
-    fun getPath() = path
+    fun getPath() = savedStateHandle.get<List<Coordinate>>(PATH_KEY) ?: emptyList()
 
     fun setPath(startId: String, destinationId: String) {
         coroutineScope.launch {
@@ -97,8 +104,10 @@ class MapViewModel(
         }
     }
 
+    private fun createPath(path: List<Coordinate>) = savedStateHandle.set(PATH_KEY, path)
+
     fun getFloorSet(): MutableSet<FloorDetail?> {
-        return when (floor) {
+        return when (savedStateHandle.get(FLOOR_KEY) ?: 2) {
             1 -> mutableSetOf(floorDetails["B1"], floorDetails["D1"], floorDetails["A2"])
             2 -> mutableSetOf(floorDetails["B2"], floorDetails["D2"], floorDetails["A2"])
             3 -> mutableSetOf(floorDetails["B2"], floorDetails["D2"], floorDetails["A3"])
@@ -106,18 +115,16 @@ class MapViewModel(
         }
     }
 
-    fun setFloorSet(floorNumber: Int) {
-        floor = floorNumber
-    }
+    fun setFloorSet(floorNumber: Int) = savedStateHandle.set(FLOOR_KEY, floorNumber)
 
-    suspend fun getCoordinate(id: String): Coordinate? {
+    private suspend fun getCoordinate(id: String): Coordinate? {
         val coordinate: Deferred<Coordinate?> = coroutineScope.async {
             getCoordinateById(id)
         }
         return coordinate.await()
     }
 
-    suspend fun getReachable(id: String): List<CoordinateAndReachable>? {
+    private suspend fun getReachable(id: String): List<CoordinateAndReachable>? {
         val reachable: Deferred<List<CoordinateAndReachable>?> = coroutineScope.async {
             getReachableCoordinateById(id)
         }
@@ -142,7 +149,7 @@ class MapViewModel(
         return withContext(Dispatchers.IO) {
             val fromCoordinate = mutableMapOf<Coordinate, Coordinate>()
             val cost = mutableMapOf<Coordinate, Double>()
-            val pathCandidates = PriorityQueue<CoordinateRank>()
+            val pathCandidates = PriorityQueue<CoordinateRank?>()
             val examined = HashSet<Coordinate>()
 
             pathCandidates.add(start priority 0.0)
@@ -150,10 +157,10 @@ class MapViewModel(
             cost[start] = 0.0
 
             while (pathCandidates.any()) {
-                val current: Coordinate = pathCandidates.poll().coordinate
+                val current: Coordinate = pathCandidates.poll()!!.coordinate
 
                 if (current == destination) {
-                    break;
+                    break
                 }
 
                 examined.add(current)
@@ -171,26 +178,26 @@ class MapViewModel(
                     }
                 }
             }
-            val latLngList = mutableListOf<LatLng>()
+            val coordinateList = mutableListOf<Coordinate>()
             var end = destination
-            latLngList.add(LatLng(end.latitude, end.longitude))
+            coordinateList.add(end)
 
             while (true) {
                 if (end == start) {
                     break
                 }
                 val next = fromCoordinate[end]!!
-                latLngList.add(LatLng(next.latitude, next.longitude))
+                coordinateList.add(next)
                 end = next
             }
-            path = latLngList
+            createPath(coordinateList)
         }
     }
 
     private fun estimateHeuristic(coordinate1: Coordinate, coordinate2: Coordinate): Double {
         val latitude = coordinate1.latitude - coordinate2.latitude
         val longitude = coordinate1.longitude - coordinate2.longitude
-        return kotlin.math.sqrt((latitude * latitude) + (longitude * longitude));
+        return kotlin.math.sqrt((latitude * latitude) + (longitude * longitude))
     }
 
     private infix fun Coordinate.priority(priority: Double) =

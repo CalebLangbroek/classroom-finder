@@ -2,11 +2,14 @@
     <string name="app_name">Classroom Finder</string>
     <string name="saved_courses">Saved Courses</string>
     <string name="permissionTitle">Permission Denied</string>
-    <string name="permissionDialog">Will not use your location - to change this permission setting in the future, visit Settings>Apps</string>
+    <string name="permissionDialog">Will not use your location - to change this permission setting in the future, visit
+        Settings>Apps
+    </string>
     <string name="search_hint">Search courses</string>
     <string name="search">Search</string>
     <string name="draw_path">Draw Path</string>
     <string name="clear_path">Clear Path</string>
+    <string name="set_path">Set Path</string>
     <string name="floor_1">1</string>
     <string name="floor_2">2</string>
     <string name="floor_3">3</string>
