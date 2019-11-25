@@ -7,6 +7,9 @@
         <variable
             name="mapViewModel"
             type="com.ninjatech.classroomfinder.map.MapViewModel"/>
+        <variable
+            name="destinationId"
+            type="String"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,46 +23,32 @@
             android:layout_height="match_parent" tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="0dp"/>
         <Button
-            android:id="@+id/drawPathButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/draw_path"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <Button
-            android:id="@+id/setPathButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_path"
-            app:layout_constraintStart_toEndOf="@id/drawPathButton"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <Button
             android:id="@+id/clearPathButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/clear_path"
-            app:layout_constraintStart_toEndOf="@id/setPathButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         <Button
             android:id="@+id/changeToFloor1Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/floor_1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/clearPathButton"
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:id="@+id/changeToFloor2Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/floor_2"
             app:layout_constraintTop_toBottomOf="@+id/changeToFloor1Button"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"/>
         <Button
             android:id="@+id/changeToFloor3Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/floor_3"
             app:layout_constraintTop_toBottomOf="@+id/changeToFloor2Button"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

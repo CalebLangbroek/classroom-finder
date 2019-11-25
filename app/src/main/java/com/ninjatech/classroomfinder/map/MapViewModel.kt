@@ -96,15 +96,13 @@ class MapViewModel(
 
     fun getPath() = savedStateHandle.get<List<Coordinate>>(PATH_KEY) ?: emptyList()
 
-    fun setPath(startId: String, destinationId: String) {
+    fun setPath(startLocation: Coordinate, destinationId: String) {
         coroutineScope.launch {
-            val start: Coordinate = getCoordinate(startId)!!
+            val coordinateList = getCoordinateList()
             val destination: Coordinate = getCoordinate(destinationId)!!
-            pathToDestination(start, destination)
+            pathToDestination(findClosestCoordinate(coordinateList, startLocation), destination)
         }
     }
-
-    private fun createPath(path: List<Coordinate>) = savedStateHandle.set(PATH_KEY, path)
 
     fun getFloorSet(): MutableSet<FloorDetail?> {
         return when (savedStateHandle.get(FLOOR_KEY) ?: 2) {
@@ -131,6 +129,13 @@ class MapViewModel(
         return reachable.await()
     }
 
+    private suspend fun getCoordinateList(): List<Coordinate>? {
+        val coordinateList: Deferred<List<Coordinate>?> = coroutineScope.async {
+            getAllCoordinates()
+        }
+        return coordinateList.await()
+    }
+
     private suspend fun getCoordinateById(id: String): Coordinate? {
         return withContext(Dispatchers.IO) {
             val coordinate = database.getCoordinateById(id)
@@ -142,6 +147,13 @@ class MapViewModel(
         return withContext(Dispatchers.IO) {
             val coordinate = database.getCoordinateReachableById(id)
             coordinate
+        }
+    }
+
+    private suspend fun getAllCoordinates(): List<Coordinate>? {
+        return withContext(Dispatchers.IO) {
+            val coordinateList = database.getAllCoordinates()
+            coordinateList
         }
     }
 
@@ -193,6 +205,17 @@ class MapViewModel(
             createPath(coordinateList)
         }
     }
+
+    private fun findClosestCoordinate(coordinateList: List<Coordinate>?, location: Coordinate): Coordinate {
+        val closest = PriorityQueue<CoordinateRank>()
+        coordinateList!!.forEach {
+            val heuristic = estimateHeuristic(it, location)
+            closest.add(it priority heuristic)
+        }
+        return closest.poll().coordinate
+    }
+
+    private fun createPath(path: List<Coordinate>) = savedStateHandle.set(PATH_KEY, path)
 
     private fun estimateHeuristic(coordinate1: Coordinate, coordinate2: Coordinate): Double {
         val latitude = coordinate1.latitude - coordinate2.latitude

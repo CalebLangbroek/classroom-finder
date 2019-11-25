@@ -3,6 +3,7 @@ package com.ninjatech.classroomfinder.map
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +28,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
 
     private val defaultLocation = LatLng(49.028677, -122.284397)
-    private val defaultZoom = 19.0f
+    private val defaultZoom = 18.0f
     private var userLocation: LatLng = defaultLocation
     private var groundOverlayObjects = mutableSetOf<GroundOverlay>()
     private var polylineOptions: PolylineOptions = PolylineOptions()
     private var polyline: Polyline? = null
     private var path: List<Coordinate> = emptyList()
+    private var pathDrawn = false
 
     companion object {
         private const val LOCATION_PERMISSION_CODE = 100
@@ -56,12 +58,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val arguments = MapFragmentArgs.fromBundle(arguments!!)
 
         // Coordinate id
-        //arguments.coordinateId
+        binding.destinationId = arguments.coordinateId
 
         // Initialize the View Model.
         this.initViewModel()
 
         this.initButtons()
+
+        locationPermissionAction()
 
         // Create the map.
         mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
@@ -70,20 +74,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        locationPermissionAction()
-    }
-
     /**
      * Specifies the the actions taken when the map is loaded.
      */
     override fun onMapReady(gMap: GoogleMap?) {
         googleMap = gMap!!
 
+        googleMap.isMyLocationEnabled = true
+
         plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
+
+
     }
 
     private fun locationPermissionAction() {
@@ -103,7 +106,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun startLocationUpdate() {
         binding.mapViewModel!!.getCurrentLocation().observe(this, Observer {
             userLocation = LatLng(it.latitude, it.longitude)
+            if (binding.destinationId != "null") {
+                setPath()
+            }
+            if (!pathDrawn) {
+                Handler().postDelayed({
+                    drawPath()
+                }, 2000)
+            }
+            pathDrawn = true
         })
+
     }
 
     private fun permissionGiven() = (activity?.run {
@@ -125,11 +138,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setPath() {
-        binding.mapViewModel!!.setPath("O027", "O004")
+        val currentLocation = Coordinate("id", userLocation.latitude, userLocation.longitude)
+        binding.mapViewModel!!.setPath(
+            currentLocation,
+            binding.destinationId!!
+        )
     }
 
     private fun drawPath() {
-
         val latLngPath = mutableListOf<LatLng>()
         path = binding.mapViewModel!!.getPath()
         path.forEach {
@@ -163,14 +179,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initButtons() {
-        val drawPathButton: Button = binding.drawPathButton
-        drawPathButton.setOnClickListener {
-            drawPath()
-        }
-        val setPathButton: Button = binding.setPathButton
-        setPathButton.setOnClickListener {
-            setPath()
-        }
         val clearPathButton: Button = binding.clearPathButton
         clearPathButton.setOnClickListener {
             clearPath()
