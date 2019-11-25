@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentProfileBinding
@@ -84,6 +85,18 @@ class ProfileFragment : Fragment() {
 
                 // Notify the ViewModel that we are done navigating
                 profileViewModel.navigationFinished()
+            }
+        })
+
+        // Observe snackBarText so we can show a snackbar
+        profileViewModel.snackBarText.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    it,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                profileViewModel.clearSnackBarText()
             }
         })
 

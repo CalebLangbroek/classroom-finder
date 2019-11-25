@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ninjatech.classroomfinder.database.Coordinate
-import com.ninjatech.classroomfinder.database.SavedSection
 import com.ninjatech.classroomfinder.database.SavedSectionsDao
 import kotlinx.coroutines.*
 
@@ -23,6 +22,11 @@ class ProfileViewModel(
 
     val navigateToMap: LiveData<Coordinate>
         get() = _navigateToMap
+
+    private var _snackBarText = MutableLiveData<String>()
+
+    val snackBarText: LiveData<String>
+        get() = _snackBarText
 
     val savedCourses = database.getAllSavedCourseData()
 
@@ -47,10 +51,13 @@ class ProfileViewModel(
     }
 
     /**
-     *
+     * Called when the delete button is clicked, deletes the saved section.
      */
     fun onDeleteButtonClicked(crn: Int) {
-
+        uiScope.launch {
+            deleteSavedSectionByCrn(crn)
+            _snackBarText.value = "Course Removed"
+        }
     }
 
     /**
@@ -60,12 +67,16 @@ class ProfileViewModel(
         _navigateToMap.value = null
     }
 
+    fun clearSnackBarText() {
+        _snackBarText.value = ""
+    }
+
     /**
      * Delete a course from saved courses.
      */
-    private suspend fun deleteSavedSection(savedSection: SavedSection) {
+    private suspend fun deleteSavedSectionByCrn(crn: Int) {
         withContext(Dispatchers.IO) {
-            database.delete(savedSection)
+            database.deleteSavedSectionByCrn(crn)
         }
     }
 

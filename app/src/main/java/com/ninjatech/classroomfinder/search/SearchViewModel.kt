@@ -23,7 +23,8 @@ class SearchViewModel(
 
     private var _snackBarText = MutableLiveData<String>()
 
-    val snackBarText: LiveData<String> get() = _snackBarText
+    val snackBarText: LiveData<String>
+        get() = _snackBarText
 
     var courses = Transformations.switchMap(searchInput) {
         if (it.isEmpty()) {

@@ -28,7 +28,7 @@ interface SavedSectionsDao {
     fun getAllSavedCourseData(): LiveData<List<SectionAndCourse>>?
 
     /**
-     *
+     * Get a coordinate for section.
      */
     @Query(
         """
@@ -42,6 +42,9 @@ interface SavedSectionsDao {
     )
     fun getCoordinateFromCrn(crn: Int): Coordinate?
 
+
+    @Query("DELETE FROM saved_sections WHERE section_crn = :crn")
+    fun deleteSavedSectionByCrn(crn: Int)
 
     @Query("DELETE FROM saved_sections")
     fun deleteAll()
