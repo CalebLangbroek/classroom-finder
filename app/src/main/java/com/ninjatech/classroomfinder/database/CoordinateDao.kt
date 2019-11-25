@@ -1,6 +1,5 @@
 package com.ninjatech.classroomfinder.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 
@@ -31,4 +30,7 @@ interface CoordinateDao {
      */
     @Query("SELECT coordinates.* FROM coordinates INNER JOIN rooms WHERE rooms.id = :roomId AND rooms.coor_id = coordinates.id")
     fun getCoordinateByRoomId(roomId: String): Coordinate?
+
+    @Query("SELECT * FROM coordinates")
+    fun getAllCoordinates(): List<Coordinate>?
 }

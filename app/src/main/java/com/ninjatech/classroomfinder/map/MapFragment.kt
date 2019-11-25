@@ -51,6 +51,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             false
         )
 
+        // Get the coordinate id if navigated to from the profile
+        val arguments = MapFragmentArgs.fromBundle(arguments!!)
+
+        // Coordinate id
+        //arguments.coordinateId
+
         // Initialize the View Model.
         this.initViewModel()
 

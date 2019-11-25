@@ -21,22 +21,12 @@
             android:id="@+id/saved_courses_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
             android:text="@string/saved_courses"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/edit_saved_course_list_button"
-            style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> profileViewModel.onEditButtonClicked()}"
-            android:src="@drawable/ic_edit_black_24dp"
-            android:tint="#00FFFFFF"
-            app:layout_constraintBottom_toBottomOf="@+id/saved_courses_text"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView

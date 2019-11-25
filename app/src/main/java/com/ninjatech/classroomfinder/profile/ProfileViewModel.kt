@@ -4,12 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ninjatech.classroomfinder.database.Coordinate
 import com.ninjatech.classroomfinder.database.SavedSection
 import com.ninjatech.classroomfinder.database.SavedSectionsDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 /**
  * ViewModel class for ProfileFragment.
@@ -21,9 +19,10 @@ class ProfileViewModel(
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val _navigateToMap = MutableLiveData<Coordinate>()
 
-    private val _editEnabled = MutableLiveData<Boolean>(false)
-    val editEnabled: LiveData<Boolean> get() = _editEnabled
+    val navigateToMap: LiveData<Coordinate>
+        get() = _navigateToMap
 
     val savedCourses = database.getAllSavedCourseData()
 
@@ -37,25 +36,45 @@ class ProfileViewModel(
     }
 
     /**
-     * Enable or disable editing.
+     * Called when the navigation button beside a course is clicked.
      */
-    fun onEditButtonClicked() {
+    fun onNavigateButtonClicked(crn: Int) {
+        uiScope.launch {
+            val coordinate = getCoordinateFromCrn(crn)
 
+            _navigateToMap.value = coordinate
+        }
     }
 
     /**
      *
      */
-    fun onNavigateButtonClicked() {
+    fun onDeleteButtonClicked(crn: Int) {
 
+    }
+
+    /**
+     * Called after navigation is finished to reset the navigateToMap variable.
+     */
+    fun navigationFinished() {
+        _navigateToMap.value = null
     }
 
     /**
      * Delete a course from saved courses.
      */
-    private suspend fun delete(savedSection: SavedSection) {
+    private suspend fun deleteSavedSection(savedSection: SavedSection) {
         withContext(Dispatchers.IO) {
             database.delete(savedSection)
+        }
+    }
+
+    /**
+     * Get the coordinate from a section crn.
+     */
+    private suspend fun getCoordinateFromCrn(crn: Int): Coordinate? {
+        return withContext(Dispatchers.IO) {
+            return@withContext database.getCoordinateFromCrn(crn)
         }
     }
 }

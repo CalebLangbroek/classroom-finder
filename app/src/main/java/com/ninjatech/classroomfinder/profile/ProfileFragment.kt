@@ -9,10 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentProfileBinding
-import com.ninjatech.classroomfinder.util.SectionAndCourseListener
+import com.ninjatech.classroomfinder.util.ProfileListener
 
 /**
  * Fragment for profile screen.
@@ -56,15 +57,33 @@ class ProfileFragment : Fragment() {
         // Bind to it
         this.binding.profileViewModel = profileViewModel
 
-        val adapter = SavedCourseAdapter(SectionAndCourseListener { crn ->
-            profileViewModel.onNavigateButtonClicked()
-        }, profileViewModel.editEnabled)
+        val profileListener = ProfileListener({ crn ->
+            profileViewModel.onDeleteButtonClicked(crn)
+        }, { crn ->
+            profileViewModel.onNavigateButtonClicked(crn)
+        }
+        )
+
+        val adapter = SavedCourseAdapter(profileListener)
 
         binding.savedCourseList.adapter = adapter
 
         profileViewModel.savedCourses?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+            }
+        })
+
+        // Observe navigateToMap, when it's not null navigate with the id as a parameter
+        profileViewModel.navigateToMap.observe(viewLifecycleOwner, Observer { coordinate ->
+            coordinate?.let {
+                // Navigate to the map passing the coordinate id
+                this.findNavController().navigate(
+                    ProfileFragmentDirections.actionProfileFragmentToMapFragment(coordinate.id)
+                )
+
+                // Notify the ViewModel that we are done navigating
+                profileViewModel.navigationFinished()
             }
         })
 

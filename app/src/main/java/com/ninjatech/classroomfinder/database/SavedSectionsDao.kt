@@ -1,7 +1,10 @@
 package com.ninjatech.classroomfinder.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
 
 @Dao
 interface SavedSectionsDao {
@@ -23,6 +26,22 @@ interface SavedSectionsDao {
     """
     )
     fun getAllSavedCourseData(): LiveData<List<SectionAndCourse>>?
+
+    /**
+     *
+     */
+    @Query(
+        """
+        SELECT coordinates.*
+        FROM sections INNER JOIN times ON sections.crn = times.section_crn
+        INNER JOIN rooms ON times.room_id = rooms.id
+        INNER JOIN coordinates ON rooms.coor_id = coordinates.id
+        WHERE sections.crn = :crn
+        LIMIT 1
+    """
+    )
+    fun getCoordinateFromCrn(crn: Int): Coordinate?
+
 
     @Query("DELETE FROM saved_sections")
     fun deleteAll()

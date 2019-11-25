@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.database.SectionAndCourse
 import com.ninjatech.classroomfinder.databinding.CourseItemViewBinding
 import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
-import com.ninjatech.classroomfinder.util.SectionAndCourseListener
+import com.ninjatech.classroomfinder.util.SearchListener
 
 /**
  * Adapter Class for formatting Courses for display.
  */
-class CourseAdapter(val clickListener: SectionAndCourseListener) :
+class CourseAdapter(val clickListener: SearchListener) :
     ListAdapter<SectionAndCourse, CourseAdapter.ViewHolder>(
         SectionAndCourseDiffCallBack()
     ) {
@@ -41,7 +41,7 @@ class CourseAdapter(val clickListener: SectionAndCourseListener) :
         /**
          * Bind to the data binding variable.
          */
-        fun bind(clickListener: SectionAndCourseListener, item: SectionAndCourse, isChecked : Boolean) {
+        fun bind(clickListener: SearchListener, item: SectionAndCourse, isChecked : Boolean) {
             binding.sectionAndCourse = item
             binding.clickListener = clickListener
             binding.isChecked= isChecked

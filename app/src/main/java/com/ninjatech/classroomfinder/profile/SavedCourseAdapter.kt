@@ -2,20 +2,18 @@ package com.ninjatech.classroomfinder.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ninjatech.classroomfinder.database.SectionAndCourse
 import com.ninjatech.classroomfinder.databinding.SavedCourseItemViewBinding
+import com.ninjatech.classroomfinder.util.ProfileListener
 import com.ninjatech.classroomfinder.util.SectionAndCourseDiffCallBack
-import com.ninjatech.classroomfinder.util.SectionAndCourseListener
 
 /**
  * Adapter Class for formatting SavedCourses for display.
  */
 class SavedCourseAdapter(
-    val clickListener: SectionAndCourseListener,
-    val editEnabled: LiveData<Boolean>
+    val clickListener: ProfileListener
 ) :
     ListAdapter<SectionAndCourse, SavedCourseAdapter.ViewHolder>(
         SectionAndCourseDiffCallBack()
@@ -26,7 +24,7 @@ class SavedCourseAdapter(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, clickListener, false)
+        holder.bind(item, clickListener)
     }
 
     /**
@@ -44,12 +42,10 @@ class SavedCourseAdapter(
          */
         fun bind(
             item: SectionAndCourse,
-            clickListener: SectionAndCourseListener,
-            isEditEnabled: Boolean
+            clickListener: ProfileListener
         ) {
             binding.sectionAndCourse = item
             binding.clickListener = clickListener
-            binding.isEditEnabled = isEditEnabled
             binding.executePendingBindings()
         }
 

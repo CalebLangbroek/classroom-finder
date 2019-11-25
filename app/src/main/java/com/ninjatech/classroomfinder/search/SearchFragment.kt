@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ninjatech.classroomfinder.R
 import com.ninjatech.classroomfinder.database.AppDatabase
 import com.ninjatech.classroomfinder.databinding.FragmentSearchBinding
-import com.ninjatech.classroomfinder.util.SectionAndCourseListener
+import com.ninjatech.classroomfinder.util.SearchListener
 
 /**
  * Fragment class for the SearchFragment.
@@ -102,7 +102,7 @@ class SearchFragment : Fragment() {
         // Bind to it
         this.binding.searchViewModel = searchViewModel
 
-        val adapter = CourseAdapter(SectionAndCourseListener { crn ->
+        val adapter = CourseAdapter(SearchListener { crn ->
             searchViewModel.onCourseClicked(crn)
         })
         binding.courseList.adapter = adapter

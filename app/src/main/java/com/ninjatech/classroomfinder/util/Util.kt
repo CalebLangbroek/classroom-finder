@@ -22,6 +22,11 @@ class SectionAndCourseDiffCallBack : DiffUtil.ItemCallback<SectionAndCourse>() {
  *
  * @param{clickListener} Callback function for the click listener.
  */
-class SectionAndCourseListener(val clickListener: (crn: Int) -> Unit) {
+class SearchListener(val clickListener: (crn: Int) -> Unit) {
     fun onClick(sectionAndCourse: SectionAndCourse) = clickListener(sectionAndCourse.section.crn)
+}
+
+class ProfileListener(val onDeleteClickListener: (crn: Int) -> Unit, val onNavigateClickListener: (crn: Int) -> Unit ) {
+    fun onNavigateClick(sectionAndCourse: SectionAndCourse) = onNavigateClickListener(sectionAndCourse.section.crn)
+    fun onDeleteClick(sectionAndCourse: SectionAndCourse) = onDeleteClickListener(sectionAndCourse.section.crn)
 }
