@@ -1,6 +1,7 @@
 package com.ninjatech.classroomfinder.map
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -212,6 +213,7 @@ class MapViewModel(
             val heuristic = estimateHeuristic(it, location)
             closest.add(it priority heuristic)
         }
+        Log.DEBUG
         return closest.poll().coordinate
     }
 

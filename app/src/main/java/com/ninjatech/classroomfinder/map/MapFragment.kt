@@ -82,11 +82,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         googleMap.isMyLocationEnabled = true
 
+        if (binding.destinationId != "null") {
+            when (binding.destinationId!!.elementAt(2)) {
+                '1' -> binding.mapViewModel!!.setFloorSet(1)
+                '2' -> binding.mapViewModel!!.setFloorSet(2)
+                '3' -> binding.mapViewModel!!.setFloorSet(3)
+                else -> binding.mapViewModel!!.setFloorSet(2)
+            }
+        }
+
         plotBuildingLayouts(binding.mapViewModel!!.getFloorSet())
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, defaultZoom))
-
-
     }
 
     private fun locationPermissionAction() {
@@ -116,7 +123,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             pathDrawn = true
         })
-
     }
 
     private fun permissionGiven() = (activity?.run {
