@@ -61,7 +61,7 @@ def insert_coords(line):
     c.execute('SELECT id FROM coordinates WHERE id=?', (coord_id, ))
     entry = c.fetchone()
     if entry is None:
-        c.execute('INSERT INTO coordinates(id, lat, long) VALUES (?, ?, ?)', (coord_id, lat, long))
+        c.execute('INSERT OR REPLACE INTO coordinates(id, lat, long) VALUES (?, ?, ?)', (coord_id, lat, long))
 
     conn.commit()
 
@@ -95,8 +95,11 @@ def insert_neighbours(line):
             x_dist = abs(abs(from_long) - abs(to_long))
             y_dist = abs(abs(from_lat) - abs(to_lat))
             dist = math.sqrt( x_dist * x_dist + y_dist * y_dist)
-
-            c.execute('INSERT INTO reachable_coordinates(from_coor_id, to_coor_id, cost) VALUES (?, ?, ?)',
+            # TODO SELECT FROM REACHABLE COORDINATES TO SEE IF ALREADY EXISTS, IF NOT INSERT
+            c.execute('SELECT * FROM reachable_coordinates WHERE from_coor_id=? AND to_coor_id=?', (from_coord_id, to_coord_id))
+            existing = c.fetchone()
+            if existing is None:
+                c.execute('INSERT OR REPLACE INTO reachable_coordinates(from_coor_id, to_coor_id, cost) VALUES (?, ?, ?)',
                       (from_coord_id, to_coord_id, dist))
 
     conn.commit()
@@ -110,7 +113,7 @@ def insert_rooms(line):
     coord_id = data[1]
     building = room_id[0:1]
     level = room_id[1:2]
-    c.execute('INSERT INTO rooms(id, coor_id, building, level) VALUES (?, ?, ?, ?)', (room_id, coord_id, building, level))
+    c.execute('INSERT OR REPLACE INTO rooms(id, coor_id, building, level) VALUES (?, ?, ?, ?)', (room_id, coord_id, building, level))
     conn.commit()
     print(room_id + coord_id + building + level)
 

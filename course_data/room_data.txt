@@ -377,8 +377,38 @@ bs216: bs126, bh215
 bh217: dh201, bh215
 bh218: bh213, bh215
 
+Building D, Floor 1: Path Neighbours
+dh101: o013, dh102
+dh102: dh101, dh103
+dh103: dh102, dh104, dh105, dh106
+dh104: dh103
+dh105: dh103
+dh106: dh103, dh107
+dh107: dh106, dh108
+dh108: dh107, dh109
+dh109: dh108, dh110, de111, dh112
+dh110: o053, dh109
+de111: dh109, de211
+dh112: dh109, dh113
+dh113: dh112, dh128
+dh114: dh128
+dh115: dh128
+dh116: dh128
+dh117: dh118, dh128
+dh118: o050, dh117, dh119
+dh119: dh118, ds120, dh121
+ds120: dh119, ds221
+dh121: dh119, dh122
+dh122: dh121, dh123
+dh123: o048, dh122, dh124, dh125, dh126, dh127
+dh124: dh123
+dh125: dh123
+dh126: dh123
+dh127: dh123
+dh128: dh113, dh114, dh115, dh116, dh117
+
 Building D, Floor 2: Path Neighbours
-dh201: OUTSIDE, dh202
+dh201: bh217, dh202
 dh202: dh201, dh203
 dh203: dh202, dh204
 dh204: dh203, dh205, dh206, dh207, dh208, dh209
