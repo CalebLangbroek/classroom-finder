@@ -43,7 +43,7 @@ class NotificationUtils {
         current.timeInMillis = System.currentTimeMillis()
         calendar.timeInMillis = System.currentTimeMillis()
 //        Test line left in for immediate firing of notification for testing.
-//        alarmMgr!!.set(AlarmManager.RTC_WAKEUP, 0, alarmIntent)
+        alarmMgr!!.set(AlarmManager.RTC_WAKEUP, 0, alarmIntent)
         if (data.size != 0) {
             val cr = savedDao!!.getAlarms()
             if (cr == null) {
