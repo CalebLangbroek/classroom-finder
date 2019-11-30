@@ -1,5 +1,6 @@
 package com.ninjatech.classroomfinder.database
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -41,6 +42,9 @@ interface SavedSectionsDao {
     """
     )
     fun getCoordinateFromCrn(crn: Int): Coordinate?
+
+    @Query ("SELECT times.day, times.start_time FROM saved_sections INNER JOIN sections ON crn = saved_sections.section_crn INNER JOIN courses ON course_id = courses.id INNER JOIN times on crn = times.section_crn ORDER BY start_time ASC")
+    fun getAlarms(): Cursor
 
 
     @Query("DELETE FROM saved_sections WHERE section_crn = :crn")
