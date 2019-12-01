@@ -18,6 +18,7 @@ import com.ninjatech.classroomfinder.R
 class MyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= 26) {
@@ -47,6 +48,8 @@ class MyReceiver : BroadcastReceiver() {
         notificationManager.notify(CLASS_REMINDER_NOTIFICATION_ID, notificationBuilder.build())
 
     }
+
+
 
     companion object {
         private var CLASS_REMINDER_NOTIFICATION_ID = 0
