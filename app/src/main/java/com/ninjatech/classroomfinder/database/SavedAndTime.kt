@@ -13,7 +13,6 @@ class SavedAndTime {
     @Embedded(prefix = "saved_")
     lateinit var savedSection: SavedSection
 
-//    @Relation(parentColumn = "section_crn", entityColumn = "section_crn")
     @Embedded(prefix = "time_")
     lateinit var times: Time
 }

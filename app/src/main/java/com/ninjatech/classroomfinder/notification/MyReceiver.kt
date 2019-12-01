@@ -9,16 +9,22 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.os.Handler
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.ninjatech.classroomfinder.MainActivity
 import com.ninjatech.classroomfinder.R
+import java.util.*
 
 
 class MyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-
+        val alarmTime = intent.extras?.getInt("alarmTime")
+        val calendar = Calendar.getInstance()
+        val minute = calendar.get(Calendar.MINUTE)
+        val time = alarmTime?.minus(minute)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= 26) {
@@ -36,7 +42,7 @@ class MyReceiver : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.ic_ninja_black)
                 .setLargeIcon(largeIcon(context))
                 .setContentTitle("Your class starts soon!")
-                .setContentText("Your class begins in 20 minutes")
+                .setContentText("Your class starts in $time minutes!")
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true)
 
@@ -46,6 +52,12 @@ class MyReceiver : BroadcastReceiver() {
         if (CLASS_REMINDER_NOTIFICATION_ID > 10000) CLASS_REMINDER_NOTIFICATION_ID = 0
         CLASS_REMINDER_NOTIFICATION_ID++
         notificationManager.notify(CLASS_REMINDER_NOTIFICATION_ID, notificationBuilder.build())
+
+        Handler().postDelayed({
+            val rec = NotificationUtils()
+            rec.setReminder(context)
+        }, 300000)
+
 
     }
 

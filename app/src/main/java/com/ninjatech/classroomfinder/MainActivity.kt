@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private var rec = NotificationUtils()
     override fun onStart() {
         super.onStart()
-//        Log.d("TAG", "message")
         rec.setReminder(this)
     }
 
