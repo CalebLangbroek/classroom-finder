@@ -58,7 +58,6 @@ class MyReceiver : BroadcastReceiver() {
             rec.setReminder(context)
         }, 300000)
 
-
     }
 
 

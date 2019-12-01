@@ -53,12 +53,13 @@ class NotificationUtils {
                 var minute = parseInt(times[1])
                 alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
                 val intent = Intent(context, MyReceiver::class.java).putExtra( "alarmTime", minute)
-                alarmIntent = PendingIntent.getBroadcast(context, intentId, intent, 0)
+
                 minute -= 20
                 if (minute < 0) {
                     minute += 60
                     hour--
                 }
+                alarmIntent = PendingIntent.getBroadcast(context, 1000, intent, 0)
                 calendar.set(Calendar.HOUR_OF_DAY, hour)
                 calendar.set(Calendar.MINUTE, minute)
                 if (Build.VERSION.SDK_INT >= 19)
