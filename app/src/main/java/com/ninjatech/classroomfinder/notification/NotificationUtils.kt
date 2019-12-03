@@ -19,15 +19,13 @@ class NotificationUtils {
 
     /**
      * Create a notification 20 minutes before a saved class starts
-     * Triggers a check for class once an hour.
+     * Repeats the query and sends a new notification every 5 minutes.
      * @param context
      */
     fun setReminder(context: Context) {
 
         var t = Thread(Runnable(){
 
-            if (intentId > 100000) intentId = 0
-            intentId++
             val current = GregorianCalendar()
             val calendar = Calendar.getInstance()
             current.timeInMillis = System.currentTimeMillis()
@@ -52,7 +50,7 @@ class NotificationUtils {
                 var hour = parseInt(times[0])
                 var minute = parseInt(times[1])
                 alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
-                val intent = Intent(context, MyReceiver::class.java).putExtra( "alarmTime", minute)
+                val intent = Intent(context, MyReceiver::class.java).putExtra( "alarmTime", minute).putExtra("alarmCrn", cursor.section.crn)
 
                 minute -= 20
                 if (minute < 0) {
@@ -67,6 +65,21 @@ class NotificationUtils {
                         AlarmManager.RTC_WAKEUP, calendar.timeInMillis, alarmIntent)
                 else
                     alarmMgr!!.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, alarmIntent)
+            } else {
+                val intent = Intent(context, MyReceiver::class.java)
+                alarmIntent = PendingIntent.getBroadcast(context, 1000, intent, 0)
+                val calendar: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 6)
+                }
+                alarmMgr?.setInexactRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
+                    alarmIntent
+                )
+
+
             }
         }
     )
@@ -78,7 +91,8 @@ class NotificationUtils {
         private var intentId = 0
     }
 
-
-
 }
+
+
+
 

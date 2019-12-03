@@ -14,4 +14,4 @@
 .externalNativeBuild
 apikey.properties
 /app/build.gradle
-
+/app/src/main/AndroidManifest.xml

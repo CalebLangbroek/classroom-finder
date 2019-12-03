@@ -1,9 +1,6 @@
 package com.ninjatech.classroomfinder
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -12,6 +9,9 @@ import com.ninjatech.classroomfinder.notification.NotificationUtils
 
 class MainActivity : AppCompatActivity() {
     private var rec = NotificationUtils()
+    companion object {
+        var firstConnect = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +28,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         //Trigger initial search and loop for alarms at device startup
-        rec.setReminder(this)
-
+        if (firstConnect) {
+            rec.setReminder(this)
+            firstConnect = false
+        } else {
+            firstConnect = true
+        }
     }
 
 

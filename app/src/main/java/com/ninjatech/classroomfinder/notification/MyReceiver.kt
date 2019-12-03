@@ -15,13 +15,18 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.ninjatech.classroomfinder.MainActivity
 import com.ninjatech.classroomfinder.R
+import com.ninjatech.classroomfinder.profile.ProfileFragment
+import com.ninjatech.classroomfinder.profile.ProfileViewModel
+import com.ninjatech.classroomfinder.profile.SavedCourseAdapter
 import java.util.*
 
 
 class MyReceiver : BroadcastReceiver() {
 
+
     override fun onReceive(context: Context, intent: Intent) {
         val alarmTime = intent.extras?.getInt("alarmTime")
+        val alarmCrn = intent.extras?.getInt("alarmCrn")
         val calendar = Calendar.getInstance()
         val minute = calendar.get(Calendar.MINUTE)
         val time = alarmTime?.minus(minute)
@@ -35,29 +40,35 @@ class MyReceiver : BroadcastReceiver() {
             )
             notificationManager.createNotificationChannel(mChannel)
         }
+        if (alarmCrn != null) {
+            val intent = Intent(context, ProfileFragment::class.java)
+            val notificationBuilder =
+                NotificationCompat.Builder(context, CLASS_REMINDER_NOTIFICATION_CHANNEL_ID)
+                    .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    .setSmallIcon(R.drawable.ic_ninja_black)
+                    .setLargeIcon(largeIcon(context))
+                    .setContentTitle("Your class starts soon!")
+                    .setContentText("Your class starts in $time minutes!")
+                    .setContentIntent(contentIntent(context, alarmCrn))
+                    .setAutoCancel(true)
 
-        val notificationBuilder =
-            NotificationCompat.Builder(context, CLASS_REMINDER_NOTIFICATION_CHANNEL_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.ic_ninja_black)
-                .setLargeIcon(largeIcon(context))
-                .setContentTitle("Your class starts soon!")
-                .setContentText("Your class starts in $time minutes!")
-                .setContentIntent(contentIntent(context))
-                .setAutoCancel(true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT < 27) {
+                notificationBuilder.priority = NotificationCompat.PRIORITY_HIGH
+            }
+            if (CLASS_REMINDER_NOTIFICATION_ID > 10000) CLASS_REMINDER_NOTIFICATION_ID = 0
+            CLASS_REMINDER_NOTIFICATION_ID++
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT < 27) {
-            notificationBuilder.priority = NotificationCompat.PRIORITY_HIGH
-        }
-        if (CLASS_REMINDER_NOTIFICATION_ID > 10000) CLASS_REMINDER_NOTIFICATION_ID = 0
-        CLASS_REMINDER_NOTIFICATION_ID++
-        notificationManager.notify(CLASS_REMINDER_NOTIFICATION_ID, notificationBuilder.build())
+            notificationManager.notify(CLASS_REMINDER_NOTIFICATION_ID, notificationBuilder.build())
 
-        Handler().postDelayed({
+            Handler().postDelayed({
+                val rec = NotificationUtils()
+                rec.setReminder(context)
+            }, 300000)
+
+        } else {
             val rec = NotificationUtils()
             rec.setReminder(context)
-        }, 300000)
-
+        }
     }
 
 
@@ -72,8 +83,8 @@ class MyReceiver : BroadcastReceiver() {
             return BitmapFactory.decodeResource(res, R.drawable.ic_ninja_black)
         }
 
-        private fun contentIntent(context: Context): PendingIntent {
-            val startActivityIntent = Intent(context, MainActivity::class.java)
+        private fun contentIntent(context: Context, alarmCrn: Int?): PendingIntent {
+            val startActivityIntent = Intent(context, MainActivity::class.java).putExtra("crn", alarmCrn)
             if (CLASS_REMINDER_PENDING_INTENT_ID > 10000) CLASS_REMINDER_PENDING_INTENT_ID = 0
             CLASS_REMINDER_PENDING_INTENT_ID++
             return PendingIntent.getActivity(
@@ -85,4 +96,6 @@ class MyReceiver : BroadcastReceiver() {
 
         }
     }
+
 }
+

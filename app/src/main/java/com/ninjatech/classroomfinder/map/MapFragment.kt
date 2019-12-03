@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             container,
             false
         )
-
         // Get the coordinate id if navigated to from the profile
         val arguments = MapFragmentArgs.fromBundle(arguments!!)
 
